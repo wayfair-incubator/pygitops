@@ -1,6 +1,6 @@
 site_name: pygitops Documentation
 repo_url: https://github.com/wayfair-incubator/pygitops/
-repo_name: wayfair-incubator/columbo
+repo_name: wayfair-incubator/pygitops
 edit_uri: edit/main/docs/
 docs_dir: docs
 nav:
