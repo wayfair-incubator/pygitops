@@ -4,8 +4,10 @@ name: CI
 # events, but only for the main branch
 on: [push, pull_request]
 
-jobs:
+env:
+  PYTHON_VERSION: "3.8.5"
 
+jobs:
   bandit:
     runs-on: ubuntu-latest
     steps:
