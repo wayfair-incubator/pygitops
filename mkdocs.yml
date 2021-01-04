@@ -7,3 +7,9 @@ nav:
   - Overview: index.md
   - Development Guide: development-guide.md
 theme: material
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.highlight
+  - pymdownx.keys
+  - pymdownx.superfences
