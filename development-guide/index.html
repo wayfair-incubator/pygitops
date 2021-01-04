@@ -407,13 +407,13 @@ and how to work with the codebase.</p>
 <p>The pygitops project uses Docker to ease setting up a consistent development environment. The Docker documentation has
 details on how to <a href="https://docs.docker.com/install/">install Docker</a> and <a href="https://docs.docker.com/compose/install/">install Docker Compose</a> on your computer.</p>
 <p>Once you have installed Docker and Docker Compose, you can execute the test suite by running the following command from your terminal:</p>
-<pre><code class="bash">docker-compose run --rm test
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker-compose run --rm <span class="nb">test</span>
+</code></pre></div>
 
 <p>If you want to be able to execute code in the container:</p>
-<pre><code class="bash">docker-compose run --rm devbox
-(your code here)
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker-compose run --rm devbox
+<span class="o">(</span>your code here<span class="o">)</span>
+</code></pre></div>
 
 <p>In the devbox environment you'll be able to enter a Python shell and import <code>pygitops</code> or any dependencies.
 The devbox environment also comes with <code>git-core</code> - a system dependency needed to run <code>gitpython</code>, our package's main dependency.</p>
@@ -421,17 +421,17 @@ The devbox environment also comes with <code>git-core</code> - a system dependen
 <p>The Docker container has <a href="https://github.com/pdbpp/pdbpp">pdb++</a> installed that can be used as a debugger. (However, you are welcome to set up
 a different debugger if you would like.)</p>
 <p>This allows you to easily create a breakpoint anywhere in the code.</p>
-<pre><code class="python">def my_function():
-    breakpoint()
-    ...
-</code></pre>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">my_function</span><span class="p">():</span>
+    <span class="n">breakpoint</span><span class="p">()</span>
+    <span class="o">...</span>
+</code></pre></div>
 
 <p>When you run your code, you will drop into an interactive <code>pdb++</code> debugger.</p>
 <p>See the documentation on <a href="https://docs.python.org/3/library/pdb.html">pdb</a> and <a href="https://github.com/pdbpp/pdbpp#usage">pdb++</a> for more information.</p>
 <h2 id="testing">Testing</h2>
 <p>You'll be unable to merge code unless the linting and tests pass. You can run these in your container via:</p>
-<pre><code class="bash">docker-compose run --rm test
-</code></pre>
+<div class="highlight"><pre><span></span><code>docker-compose run --rm <span class="nb">test</span>
+</code></pre></div>
 
 <p>This will run the same tests, linting, and code coverage that are run by the CI pipeline. The only difference is that when run locally, <code>black</code> and <code>isort</code> are configured to automatically correct issues they detect.</p>
 <p>Generally we should endeavor to write tests for every feature. Every new feature branch should increase the test

@@ -56,7 +56,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#pygitops" class="md-skip">
+        <a href="#pygitops-090" class="md-skip">
           Skip to content
         </a>
       
@@ -190,9 +190,86 @@
       
     
     
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Overview
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+    
     <a href="." class="md-nav__link md-nav__link--active">
       Overview
     </a>
+    
+      
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloning-repo" class="md-nav__link">
+    Cloning Repo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-gitpython" class="md-nav__link">
+    Using GitPython
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commiting-change" class="md-nav__link">
+    Commiting Change
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-start" class="md-nav__link">
+    Where to Start?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-documentation" class="md-nav__link">
+    Detailed Documentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    API Reference
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
     
   </li>
 
@@ -226,6 +303,69 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples
+  </a>
+  
+    <nav class="md-nav" aria-label="Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cloning-repo" class="md-nav__link">
+    Cloning Repo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-gitpython" class="md-nav__link">
+    Using GitPython
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#commiting-change" class="md-nav__link">
+    Commiting Change
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-start" class="md-nav__link">
+    Where to Start?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detailed-documentation" class="md-nav__link">
+    Detailed Documentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#api-reference" class="md-nav__link">
+    API Reference
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -241,7 +381,63 @@
                   </a>
                 
                 
-                <h1 id="pygitops">pygitops</h1>
+                <h1 id="pygitops-090">pygitops - 0.9.0</h1>
+<p><a href="https://github.com/wayfair-incubator/pygitops/actions"><img alt="CI pipeline status" src="https://github.com/wayfair-incubator/pygitops/workflows/CI/badge.svg?branch=main" /></a></p>
+<p><code>pygitops</code> provides a convenience layer for developers wishing to automate git workflows with python.</p>
+<p>Best of all, it works extremely well with <a href="https://github.com/gitpython-developers/GitPython">GitPython</a> as well as <a href="https://github.com/PyGithub/PyGithub">PyGithub</a>!</p>
+<p><code>pygitops</code>' feature set improves the experience of:</p>
+<ul>
+<li>cloning git repositories</li>
+<li>keeping local repositories up to date with their remotes</li>
+<li>making code changes on a repository feature branch</li>
+<li>staging, commiting, and pushing changes to remote</li>
+</ul>
+<h2 id="examples">Examples</h2>
+<h3 id="cloning-repo">Cloning Repo</h3>
+<p>Most automated git workflows involve interacting with a local clone of a repo. You might want to begin by having a copy of that repository on your local disk. <code>pygitops</code> will clone the repository for you, updating it when already present.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pygitops.operations</span> <span class="kn">import</span> <span class="n">build_github_repo_url</span><span class="p">,</span> <span class="n">get_updated_repo</span>
+
+<span class="n">service_account_name</span> <span class="o">=</span> <span class="s1">&#39;some-service-account-name&#39;</span>
+<span class="n">service_account_token</span> <span class="o">=</span> <span class="s1">&#39;some-service-account-token&#39;</span>
+<span class="n">repo_owner</span> <span class="o">=</span> <span class="s1">&#39;wayfair-incubator&#39;</span>
+<span class="n">repo_name</span> <span class="o">=</span> <span class="s1">&#39;pygitops&#39;</span>
+
+<span class="n">repo_url</span> <span class="o">=</span> <span class="n">build_github_repo_url</span><span class="p">(</span><span class="n">service_account_name</span><span class="p">,</span> <span class="n">service_account_token</span><span class="p">,</span> <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">)</span>
+
+<span class="n">repo</span> <span class="o">=</span> <span class="n">get_updated_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">,</span> <span class="s1">&#39;/repos&#39;</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="using-gitpython">Using GitPython</h3>
+<p>The <code>repo</code> returned by <code>get_updated_repo</code> is an instance of <code>git.Repo</code>, from the <a href="https://github.com/gitpython-developers/GitPython">GitPython</a> package. If you are already familiar with the package and need to leverage its functionality, <code>pygitops</code> won't get in your way!</p>
+<div class="highlight"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span> <span class="nn">git</span> <span class="kn">import</span> <span class="n">Repo</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="s1">&#39;some-repo&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">repo</span><span class="o">.</span><span class="n">working_dir</span>
+<span class="s1">&#39;User/repos/some-repo&#39;</span>
+</code></pre></div>
+
+<h3 id="commiting-change">Commiting Change</h3>
+<p>A common git automation use case is to commit some changes; pushing them to a remote feature branch. Here, we create a new file <code>chores.txt</code> and commit / push that change to the <code>new-chores</code> feature branch. You may then want to use <a href="https://github.com/PyGithub/PyGithub">PyGithub</a> to create a pull request from these changes.</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">pygitops.operations</span> <span class="kn">import</span> <span class="n">feature_branch</span><span class="p">,</span> <span class="n">stage_commit_push_changes</span>
+<span class="kn">from</span> <span class="nn">git</span> <span class="kn">import</span> <span class="n">Actor</span>
+
+<span class="n">repo_name</span> <span class="o">=</span> <span class="s1">&#39;some-repo&#39;</span>
+<span class="n">branch_name</span> <span class="o">=</span> <span class="s1">&#39;new-chores&#39;</span>
+<span class="n">some_actor</span> <span class="o">=</span> <span class="n">Actor</span><span class="p">(</span><span class="s1">&#39;some-service-account&#39;</span><span class="p">,</span> <span class="s1">&#39;some-service-account@some-enterprise.com&#39;</span><span class="p">)</span>
+<span class="n">commit_message</span> <span class="o">=</span> <span class="s1">&#39;Add list of chores&#39;</span>
+
+<span class="k">with</span> <span class="n">feature_branch</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">):</span>
+    <span class="n">Path</span><span class="p">(</span><span class="s1">&#39;some-clone-dir&#39;</span> <span class="o">/</span> <span class="n">repo_name</span> <span class="o">/</span> <span class="s1">&#39;chores.txt&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s1">&#39;haircut</span><span class="se">\n</span><span class="s1">groceries</span><span class="se">\n</span><span class="s1">dishes&#39;</span><span class="p">)</span>
+
+    <span class="n">stage_commit_push_changes</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">,</span> <span class="n">some_actor</span><span class="p">,</span> <span class="n">commit_message</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="where-to-start">Where to Start?</h2>
+<p>TODO</p>
+<h2 id="detailed-documentation">Detailed Documentation</h2>
+<p>TODO</p>
+<h2 id="api-reference">API Reference</h2>
 <p>TODO</p>
                 
               
