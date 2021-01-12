@@ -17,10 +17,9 @@ services:
     command: docker/run_tests.sh --format-code
 
   # generate and serve the project documentation locally
-  mkdocs:
-    image: "squidfunk/mkdocs-material:6.0.2"
-    volumes:
-      - ./:/docs
+  mkdocs: &mkdocs
+    <<: *devbox
+    entrypoint: "mkdocs"
     ports:
       - "8000:8000"
-
+    command: ["serve", "--dev-addr=0.0.0.0:8000"]
