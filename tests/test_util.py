@@ -138,7 +138,3 @@ def test_pull_branch__branch_not_in_refs__raises_pygitops_error(mocker):
 
     with pytest.raises(PyGitOpsError):
         checkout_pull_branch(repo, "test_branch")
-
-
-def test_pull_branch__file_operations(mocker, tmp_path):
-    pass
