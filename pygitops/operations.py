@@ -196,8 +196,8 @@ def get_updated_repo(
     :raises PyGitOpsError: There was an error cloning the repository.
     """
 
-    sa_token_regex = "https://.+?:.+?@"
-    sa_token_replace_term = "https://***:***@"
+    sa_token_regex = "https://.+?:.+?@"  # nosec
+    sa_token_replace_term = "https://***:***@"  # nosec
 
     # make sure it's actually a Path if our user passed a str
     clone_dir = Path(clone_dir)
