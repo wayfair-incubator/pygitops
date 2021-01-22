@@ -40,7 +40,7 @@ SOME_SERVICE_ACCOUNT_TOKEN = "test_cred_123"
 SOME_GITHUB_DOMAIN_NAME = "some-github-domain-name"
 SOME_REPO_NAMESPACE = "test_namespace"
 SOME_REPO_NAME = "some-repo-name"
-SOME_REPO_URL = f"https://{SOME_SERVICE_ACCOUNT_NAME}:{SOME_SERVICE_ACCOUNT_TOKEN}@{SOME_GITHUB_DOMAIN_NAME}/{SOME_REPO_NAMESPACE}/{SOME_REPO_NAME}.git"
+SOME_CLONE_REPO_URL = f"https://{SOME_SERVICE_ACCOUNT_NAME}:{SOME_SERVICE_ACCOUNT_TOKEN}@{SOME_GITHUB_DOMAIN_NAME}/{SOME_REPO_NAMESPACE}/{SOME_REPO_NAME}.git"
 SOME_CLONE_PATH = Path("foo")
 SOME_LOCAL_REPO_NAME = "local"
 SOME_HEAD_REF = f"refs/remotes/origin/{GIT_BRANCH_MASTER}"
@@ -371,7 +371,7 @@ def test_get_updated_repo__git_error_raised_by_repo__raises_pygitops_error(mocke
     mocker.patch("pygitops.operations.Repo.clone_from", side_effect=GitError)
 
     with pytest.raises(PyGitOpsError):
-        get_updated_repo(SOME_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
+        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
 
 
 def test_get_updated_repo__repo_dne__fresh_clone_performed(mocker, tmp_path):
@@ -379,9 +379,9 @@ def test_get_updated_repo__repo_dne__fresh_clone_performed(mocker, tmp_path):
     clone_from_mock = mocker.patch("pygitops.operations.Repo.clone_from")
     expected_clone_path = tmp_path / SOME_REPO_NAME
 
-    get_updated_repo(SOME_REPO_URL, tmp_path, SOME_REPO_NAME)
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, SOME_REPO_NAME)
 
-    clone_from_mock.assert_called_once_with(SOME_REPO_URL, expected_clone_path)
+    clone_from_mock.assert_called_once_with(SOME_CLONE_REPO_URL, expected_clone_path)
 
 
 def test_get_updated_repo__repo_dne__kwargs_passed_to_clone_from(mocker, tmp_path):
@@ -391,10 +391,10 @@ def test_get_updated_repo__repo_dne__kwargs_passed_to_clone_from(mocker, tmp_pat
 
     some_kwargs = {"some_arg": "some-value", "another_arg": "another-value"}
 
-    get_updated_repo(SOME_REPO_URL, tmp_path, SOME_REPO_NAME, **some_kwargs)
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, SOME_REPO_NAME, **some_kwargs)
 
     clone_from_mock.assert_called_once_with(
-        SOME_REPO_URL, expected_clone_path, **some_kwargs
+        SOME_CLONE_REPO_URL, expected_clone_path, **some_kwargs
     )
 
 
@@ -411,7 +411,7 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_de
     )
     mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
 
-    get_updated_repo(SOME_REPO_URL, tmp_path, SOME_REPO_NAME)
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, SOME_REPO_NAME)
 
     master_branch_mock.checkout.assert_called_once()
     repo_mock.remotes.origin.pull.assert_called_once()
@@ -431,7 +431,7 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_pr
     mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
 
     get_updated_repo(
-        SOME_REPO_URL, tmp_path, SOME_REPO_NAME, branch=SOME_FEATURE_BRANCH
+        SOME_CLONE_REPO_URL, tmp_path, SOME_REPO_NAME, branch=SOME_FEATURE_BRANCH
     )
 
     get_default_branch_mock.assert_not_called()
@@ -519,7 +519,7 @@ def test_get_updated_repo__error__login_not_in_error(mocker):
     )
 
     with pytest.raises(PyGitOpsError) as exc_info:
-        get_updated_repo(SOME_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
+        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
 
     assert SOME_SERVICE_ACCOUNT_TOKEN not in str(exc_info.value)
 
@@ -527,13 +527,15 @@ def test_get_updated_repo__error__login_not_in_error(mocker):
 def test_get_updated_repo__error__login_scrubbed(mocker):
     mocker.patch(
         "pygitops.operations.Repo.clone_from",
-        side_effect=GitCommandError("some-command", "some-status"),
+        side_effect=GitError(SOME_CLONE_REPO_URL),
     )
 
     with pytest.raises(PyGitOpsError) as exc_info:
-        get_updated_repo(SOME_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
+        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
 
-    assert "https://***:***@" in str(exc_info.value)
+    exception_text = str(exc_info.value)
+    assert "https://***:***@" in exception_text
+    assert SOME_SERVICE_ACCOUNT_TOKEN not in exception_text
 
 
 def test_get_updated_repo__clone_dir_as_str(mocker):
@@ -542,7 +544,7 @@ def test_get_updated_repo__clone_dir_as_str(mocker):
         "pygitops.operations.Repo.clone_from",
     )
 
-    get_updated_repo(SOME_REPO_URL, "clone_dir", SOME_REPO_NAME)
+    get_updated_repo(SOME_CLONE_REPO_URL, "clone_dir", SOME_REPO_NAME)
 
     assert clone_from_mock.called
     assert clone_from_mock.call_args[0][1] == PosixPath("clone_dir/some-repo-name")
