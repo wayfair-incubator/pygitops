@@ -527,13 +527,15 @@ def test_get_updated_repo__error__login_not_in_error(mocker):
 def test_get_updated_repo__error__login_scrubbed(mocker):
     mocker.patch(
         "pygitops.operations.Repo.clone_from",
-        side_effect=GitCommandError("some-command", "some-status"),
+        side_effect=GitError(SOME_REPO_URL),
     )
 
     with pytest.raises(PyGitOpsError) as exc_info:
         get_updated_repo(SOME_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
 
-    assert "https://***:***@" in str(exc_info.value)
+    exception_text = str(exc_info.value)
+    assert "https://***:***@" in exception_text
+    assert SOME_SERVICE_ACCOUNT_TOKEN not in exception_text
 
 
 def test_get_updated_repo__clone_dir_as_str(mocker):

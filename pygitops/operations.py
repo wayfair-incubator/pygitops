@@ -196,6 +196,9 @@ def get_updated_repo(
     :raises PyGitOpsError: There was an error cloning the repository.
     """
 
+    sa_token_regex = "https://.+?:.+?@"
+    sa_token_replace_term = "https://***:***@"
+
     # make sure it's actually a Path if our user passed a str
     clone_dir = Path(clone_dir)
 
@@ -215,9 +218,12 @@ def get_updated_repo(
 
             return Repo.clone_from(repo_url, dest_repo_path, **kwargs)
         except GitError as e:
-            clean_repo_url = re.sub("https://.+?:.+?@", "https://***:***@", repo_url)
+            clean_repo_url = re.sub(sa_token_regex, sa_token_replace_term, repo_url)
+            scrubbed_error_message = re.sub(
+                sa_token_regex, sa_token_replace_term, str(e)
+            )
             raise PyGitOpsError(
-                f"Error cloning repo {clean_repo_url} into destination path {dest_repo_path}: {e}"
+                f"Error cloning repo {clean_repo_url} into destination path {dest_repo_path}: {scrubbed_error_message}"
             ) from e
 
 
