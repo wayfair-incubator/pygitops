@@ -6,6 +6,6 @@ mypy==0.812
 mkdocs-material==6.2.5
 mkdocstrings==0.14.0
 pytest==6.2.3
-pytest-cov==2.11.0
+pytest-cov==2.11.1
 pytest-mock==3.5.1
 pdbpp
