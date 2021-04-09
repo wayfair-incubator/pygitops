@@ -15,7 +15,7 @@ FILELOCK_ACQUIRE_TIMEOUT_SECONDS = 10
 
 
 @contextmanager
-def lock_repo(repo: Repo):
+def lock_repo(repo: Repo) -> Iterator[None]:
     """
     Lock a given repo for use.
 
