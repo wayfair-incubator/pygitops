@@ -31,6 +31,7 @@ def lock_repo(repo: Repo) -> Iterator[None]:
             _logger.debug(
                 f"Successfully acquired lock: {lockfile_name} for repo: {repo}"
             )
+            # yield control to the function using this context manager
             yield
             _logger.debug(f"About to release lock: {lockfile_name} for repo: {repo}")
     except Timeout:
