@@ -2,6 +2,7 @@ import logging
 import os
 from contextlib import contextmanager
 from pathlib import Path
+from typing import Iterator
 
 from filelock import FileLock, Timeout
 from git import PushInfo, Repo
