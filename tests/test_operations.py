@@ -17,9 +17,9 @@ from pygitops.exceptions import (
     PyGitOpsStagedItemsError,
     PyGitOpsValueError,
 )
+from pygitops.github_util import build_github_repo_url
 from pygitops.operations import (
     _get_branch_name,
-    build_github_repo_url,
     feature_branch,
     get_default_branch,
     get_updated_repo,
