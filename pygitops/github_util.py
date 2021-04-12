@@ -1,5 +1,7 @@
 """Utilities for working with Github."""
 
+import re
+
 from pygitops._constants import GITHUB_PUBLIC_DOMAIN_NAME
 
 
@@ -22,3 +24,10 @@ def build_github_repo_url(
     """
 
     return f"https://{service_account_name}:{service_account_token}@{domain_name}/{repo_namespace}/{repo_name}.git"
+
+
+def _scrub_github_auth(string: str) -> str:
+    sa_token_regex = "https://.+?:.+?@"  # nosec
+    sa_token_replace_term = "https://***:***@"  # nosec
+
+    return re.sub(sa_token_regex, sa_token_replace_term, string)

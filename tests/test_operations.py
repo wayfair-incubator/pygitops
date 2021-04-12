@@ -6,18 +6,13 @@ from pathlib import Path, PosixPath
 import pytest
 from git import Actor, GitCommandError, GitError, Repo
 
-from pygitops._constants import (
-    GIT_BRANCH_MAIN,
-    GIT_BRANCH_MASTER,
-    GITHUB_PUBLIC_DOMAIN_NAME,
-)
+from pygitops._constants import GIT_BRANCH_MAIN, GIT_BRANCH_MASTER
 from pygitops._util import checkout_pull_branch
 from pygitops.exceptions import (
     PyGitOpsError,
     PyGitOpsStagedItemsError,
     PyGitOpsValueError,
 )
-from pygitops.github_util import build_github_repo_url
 from pygitops.operations import (
     _get_branch_name,
     feature_branch,
@@ -336,33 +331,6 @@ def test_feature_branch__exception_within_context__cleanup_occurs(mocker, tmp_pa
             raise Exception("some exception")
 
     local_master_branch.checkout.assert_called_once()
-
-
-def test_build_github_repo_url__expected_repo_url_returned():
-
-    assert (
-        build_github_repo_url(
-            SOME_SERVICE_ACCOUNT_NAME,
-            SOME_SERVICE_ACCOUNT_TOKEN,
-            SOME_REPO_NAMESPACE,
-            SOME_REPO_NAME,
-            SOME_GITHUB_DOMAIN_NAME,
-        )
-        == f"https://{SOME_SERVICE_ACCOUNT_NAME}:{SOME_SERVICE_ACCOUNT_TOKEN}@{SOME_GITHUB_DOMAIN_NAME}/{SOME_REPO_NAMESPACE}/{SOME_REPO_NAME}.git"
-    )
-
-
-def test_build_github_repo_url__github_domain_name_not_provided__public_github_url_built():
-
-    assert (
-        build_github_repo_url(
-            SOME_SERVICE_ACCOUNT_NAME,
-            SOME_SERVICE_ACCOUNT_TOKEN,
-            SOME_REPO_NAMESPACE,
-            SOME_REPO_NAME,
-        )
-        == f"https://{SOME_SERVICE_ACCOUNT_NAME}:{SOME_SERVICE_ACCOUNT_TOKEN}@{GITHUB_PUBLIC_DOMAIN_NAME}/{SOME_REPO_NAMESPACE}/{SOME_REPO_NAME}.git"
-    )
 
 
 def test_get_updated_repo__git_error_raised_by_repo__raises_pygitops_error(mocker):

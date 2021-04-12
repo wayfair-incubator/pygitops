@@ -17,6 +17,7 @@ from pygitops.exceptions import (
     PyGitOpsStagedItemsError,
     PyGitOpsValueError,
 )
+from pygitops.github_util import _scrub_github_auth
 from pygitops.types import GitBranchType, GitDefaultBranch, PathOrStr
 
 _logger = logging.getLogger(__name__)
@@ -174,10 +175,6 @@ def get_updated_repo(
     :param repo_name: The name of the repository to be cloned.
     :raises PyGitOpsError: There was an error cloning the repository.
     """
-
-    sa_token_regex = "https://.+?:.+?@"  # nosec
-    sa_token_replace_term = "https://***:***@"  # nosec
-
     # make sure it's actually a Path if our user passed a str
     clone_dir = Path(clone_dir)
 
@@ -197,10 +194,8 @@ def get_updated_repo(
 
             return Repo.clone_from(repo_url, dest_repo_path, **kwargs)
         except GitError as e:
-            clean_repo_url = re.sub(sa_token_regex, sa_token_replace_term, repo_url)
-            scrubbed_error_message = re.sub(
-                sa_token_regex, sa_token_replace_term, str(e)
-            )
+            clean_repo_url = _scrub_github_auth(repo_url)
+            scrubbed_error_message = _scrub_github_auth(str(e))
             raise PyGitOpsError(
                 f"Error cloning repo {clean_repo_url} into destination path {dest_repo_path}: {scrubbed_error_message}"
             ) from e
