@@ -406,7 +406,8 @@
 <h2 id="examples">Examples</h2>
 <h3 id="cloning-repo">Cloning Repo</h3>
 <p>Most automated git workflows involve interacting with a local clone of a repo. You might want to begin by having a copy of that repository on your local disk. <code>pygitops</code> will clone the repository for you, updating it when already present.</p>
-<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pygitops.operations</span> <span class="kn">import</span> <span class="n">build_github_repo_url</span><span class="p">,</span> <span class="n">get_updated_repo</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pygitops.remote_git_utils</span> <span class="kn">import</span> <span class="n">build_github_repo_url</span>
+<span class="kn">from</span> <span class="nn">pygitops.operations</span> <span class="kn">import</span> <span class="n">get_updated_repo</span>
 
 <span class="n">service_account_name</span> <span class="o">=</span> <span class="s1">&#39;some-service-account-name&#39;</span>
 <span class="n">service_account_token</span> <span class="o">=</span> <span class="s1">&#39;some-service-account-token&#39;</span>
