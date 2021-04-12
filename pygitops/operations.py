@@ -7,7 +7,7 @@ from typing import Iterator, List, Optional
 from filelock import FileLock
 from git import Actor, GitError, Repo
 
-from pygitops._constants import GITHUB_PUBLIC_DOMAIN_NAME, KNOWN_DEFAULT_BRANCHES
+from pygitops._constants import KNOWN_DEFAULT_BRANCHES
 from pygitops._util import checkout_pull_branch as _checkout_pull_branch
 from pygitops._util import get_lockfile_path as _get_lockfile_path
 from pygitops._util import lock_repo as _lock_repo
@@ -17,6 +17,7 @@ from pygitops.exceptions import (
     PyGitOpsStagedItemsError,
     PyGitOpsValueError,
 )
+from pygitops.remote_git_utils import _scrub_github_auth
 from pygitops.types import GitBranchType, GitDefaultBranch, PathOrStr
 
 _logger = logging.getLogger(__name__)
@@ -161,27 +162,6 @@ def feature_branch(repo: Repo, branch: GitBranchType) -> Iterator[None]:
             )
 
 
-def build_github_repo_url(
-    service_account_name: str,
-    service_account_token: str,
-    repo_namespace: str,
-    repo_name: str,
-    domain_name: str = GITHUB_PUBLIC_DOMAIN_NAME,
-) -> str:
-    """
-    Build github repo_url with the intention of providing as the `repo_url` argument to `get_updated_repo`.
-    This factory function is specific to github, and might not support url schemas of different git services.
-
-    :param service_account_name: Name of the Github service account used to clone repository.
-    :param service_account_token: Raw token associated with the provided Github service account name.
-    :param repo_namespace: The namespace of the target repository.
-    :param repo_name: The name of the target repository.
-    :param domain_name: Github domain, allows us to point to instances other than public Github.
-    """
-
-    return f"https://{service_account_name}:{service_account_token}@{domain_name}/{repo_namespace}/{repo_name}.git"
-
-
 def get_updated_repo(
     repo_url: str, clone_dir: PathOrStr, repo_name: str, **kwargs
 ) -> Repo:
@@ -195,10 +175,6 @@ def get_updated_repo(
     :param repo_name: The name of the repository to be cloned.
     :raises PyGitOpsError: There was an error cloning the repository.
     """
-
-    sa_token_regex = "https://.+?:.+?@"  # nosec
-    sa_token_replace_term = "https://***:***@"  # nosec
-
     # make sure it's actually a Path if our user passed a str
     clone_dir = Path(clone_dir)
 
@@ -218,10 +194,8 @@ def get_updated_repo(
 
             return Repo.clone_from(repo_url, dest_repo_path, **kwargs)
         except GitError as e:
-            clean_repo_url = re.sub(sa_token_regex, sa_token_replace_term, repo_url)
-            scrubbed_error_message = re.sub(
-                sa_token_regex, sa_token_replace_term, str(e)
-            )
+            clean_repo_url = _scrub_github_auth(repo_url)
+            scrubbed_error_message = _scrub_github_auth(str(e))
             raise PyGitOpsError(
                 f"Error cloning repo {clean_repo_url} into destination path {dest_repo_path}: {scrubbed_error_message}"
             ) from e

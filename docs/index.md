@@ -20,7 +20,8 @@ Best of all, it works extremely well with [GitPython][gitpython] as well as [PyG
 Most automated git workflows involve interacting with a local clone of a repo. You might want to begin by having a copy of that repository on your local disk. `pygitops` will clone the repository for you, updating it when already present.
 
 ```python
-from pygitops.operations import build_github_repo_url, get_updated_repo
+from pygitops.remote_git_utils import build_github_repo_url
+from pygitops.operations import get_updated_repo
 
 service_account_name = 'some-service-account-name'
 service_account_token = 'some-service-account-token'
