@@ -1,7 +1,7 @@
 import pytest
 
 from pygitops._constants import GITHUB_PUBLIC_DOMAIN_NAME
-from pygitops.github_util import _scrub_github_auth, build_github_repo_url
+from pygitops.remote_git_utils import _scrub_github_auth, build_github_repo_url
 from tests.test_operations import (
     SOME_GITHUB_DOMAIN_NAME,
     SOME_REPO_NAME,

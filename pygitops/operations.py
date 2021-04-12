@@ -17,7 +17,7 @@ from pygitops.exceptions import (
     PyGitOpsStagedItemsError,
     PyGitOpsValueError,
 )
-from pygitops.github_util import _scrub_github_auth
+from pygitops.remote_git_utils import _scrub_github_auth
 from pygitops.types import GitBranchType, GitDefaultBranch, PathOrStr
 
 _logger = logging.getLogger(__name__)

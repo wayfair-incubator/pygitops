@@ -2,7 +2,7 @@
 
 ## Functions
 
-::: pygitops.github_util.build_github_repo_url
+::: pygitops.remote_git_utils.build_github_repo_url
 
 ::: pygitops.operations.get_updated_repo
 

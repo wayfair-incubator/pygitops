@@ -1,4 +1,4 @@
-"""Utilities for working with Github."""
+"""Utilities for working with git remotes."""
 
 import re
 
