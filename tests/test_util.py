@@ -1,3 +1,4 @@
+import shutil
 import unittest.mock as mock
 from pathlib import Path
 
@@ -6,6 +7,7 @@ from filelock import Timeout
 from git import PushInfo
 
 from pygitops._util import (
+    _lockfile_path,
     checkout_pull_branch,
     get_lockfile_path,
     lock_repo,
@@ -14,6 +16,13 @@ from pygitops._util import (
 from pygitops.exceptions import PyGitOpsError
 
 SOME_REPO_NAME = "some-repo-name"
+
+
+@pytest.fixture(scope="session", autouse=True)
+def _teardown():
+    """This function removes the lockfiles directory after all tests are done."""
+    yield  # let tests run
+    shutil.rmtree(_lockfile_path)
 
 
 @pytest.mark.parametrize(
