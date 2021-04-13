@@ -18,14 +18,11 @@ from pygitops.exceptions import PyGitOpsError
 SOME_REPO_NAME = "some-repo-name"
 
 
-@pytest.fixture(scope="module", autouse=True)
-def _teardown(request):
-    """This function registers functions (called finalizers) to run after the tests in this file are done."""
-
-    def remove_lockfiles_dir():
-        shutil.rmtree(_lockfile_path)
-
-    request.addfinalizer(remove_lockfiles_dir)
+@pytest.fixture(scope="session", autouse=True)
+def _teardown():
+    """This function removes the lockfiles directory after all tests are done."""
+    yield  # let tests run
+    shutil.rmtree(_lockfile_path)
 
 
 @pytest.mark.parametrize(
