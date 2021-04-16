@@ -1,4 +1,3 @@
-import re
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path, PosixPath
@@ -8,19 +7,13 @@ from git import Actor, GitCommandError, GitError, Repo
 
 from pygitops._constants import GIT_BRANCH_MAIN, GIT_BRANCH_MASTER
 from pygitops._util import checkout_pull_branch
-from pygitops.exceptions import (
-    PyGitOpsError,
-    PyGitOpsStagedItemsError,
-    PyGitOpsValueError,
-)
+from pygitops.exceptions import PyGitOpsError, PyGitOpsStagedItemsError
 from pygitops.operations import (
-    _get_branch_name,
     feature_branch,
     get_default_branch,
     get_updated_repo,
     stage_commit_push_changes,
 )
-from pygitops.types import GIT_DEFAULT_BRANCH
 
 SOME_ACTOR = Actor("some-user", "some-user@company.com")
 SOME_COMMIT_MESSAGE = "some-commit-message"
@@ -279,7 +272,7 @@ def test_feature_branch__master_present_in_origin_refs__local_master_updated(moc
 
 @pytest.mark.parametrize(
     ["feature_branch_name", "checkout_expected"],
-    ((SOME_FEATURE_BRANCH, True), (GIT_DEFAULT_BRANCH, False)),
+    ((SOME_FEATURE_BRANCH, True), (GIT_BRANCH_MASTER, False)),
 )
 def test_feature_branch__conditional_branch_checkout(
     mocker, feature_branch_name, checkout_expected
@@ -575,47 +568,6 @@ def test_get_default_branch__remote_head_changes__new_default_branch_returned(
     remote_repo.head.reference = new_branch
 
     assert get_default_branch(local_repo) == GIT_BRANCH_MAIN
-
-
-@pytest.mark.parametrize("branch_name", [GIT_BRANCH_MAIN, GIT_BRANCH_MASTER])
-def test_get_branch_name__default_branch_str_provided__raises_pygitops_value_error(
-    mocker, branch_name
-):
-
-    with pytest.raises(PyGitOpsValueError):
-        _get_branch_name(mocker.Mock(), branch_name)
-
-
-def test_get_branch_name__str_branch_provided__str_branch_returned(mocker):
-
-    assert _get_branch_name(mocker.Mock(), SOME_FEATURE_BRANCH) == SOME_FEATURE_BRANCH
-
-
-def test_get_branch_name__git_default_branch_provided__get_default_branch_invoked_for_resolution(
-    mocker,
-):
-
-    repo_mock = mocker.Mock()
-    get_default_branch_mock = mocker.patch(
-        "pygitops.operations.get_default_branch", return_value=GIT_BRANCH_MAIN
-    )
-
-    assert _get_branch_name(repo_mock, GIT_DEFAULT_BRANCH) == GIT_BRANCH_MAIN
-
-    get_default_branch_mock.assert_called_once_with(repo_mock)
-
-
-@pytest.mark.parametrize("invalid_value", [0, 1, [], ["foobar"], object(), True, None])
-def test_get_branch_name__invalid_type_provided__raises_pygitops_value_error(
-    mocker, invalid_value
-):
-    with pytest.raises(
-        PyGitOpsValueError,
-        match=re.escape(
-            f"The provided branch {invalid_value} is not a valid GitBranchType"
-        ),
-    ):
-        _get_branch_name(mocker.Mock(), invalid_value)
 
 
 def _initialize_repo_with_content(repo_path):
