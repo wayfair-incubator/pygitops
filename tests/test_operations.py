@@ -333,6 +333,36 @@ def test_feature_branch__exception_within_context__cleanup_occurs(mocker, tmp_pa
     local_master_branch.checkout.assert_called_once()
 
 
+def test_feature_branch__nested_calls__raises_pygitops_error(mocker, tmp_path):
+    """Make sure the feature_branch context manager locks the repo correctly."""
+
+    some_branch_name = "some-feature-branch"
+    timeout_message = re.escape(
+        "The timeout of 10 seconds was exceeded when attempting to acquire the lockfile: lockfiles/some-repo-name_lock_file.lock"
+    )
+    origin_mock = mocker.Mock(refs=[GIT_BRANCH_MASTER])
+    remotes_mock = mocker.Mock(origin=origin_mock)
+    local_master_branch = mocker.Mock()
+
+    repo_mock = mocker.Mock(
+        untracked_files=[],
+        active_branch=local_master_branch,
+        remotes=remotes_mock,
+        working_dir=SOME_REPO_NAME,
+        heads={GIT_BRANCH_MASTER: local_master_branch},
+        create_head=mocker.Mock(),
+        git=mocker.Mock(symbolic_ref=mocker.Mock(return_value=SOME_HEAD_REF)),
+    )
+
+    with feature_branch(repo_mock, some_branch_name):
+        with pytest.raises(
+            PyGitOpsError,
+            match=timeout_message,
+        ):
+            with feature_branch(repo_mock, some_branch_name):
+                pass
+
+
 def test_get_updated_repo__git_error_raised_by_repo__raises_pygitops_error(mocker):
     """GitError is the base exception class for the GitPython API so any exceptions raised by it will be GitErrors"""
 
