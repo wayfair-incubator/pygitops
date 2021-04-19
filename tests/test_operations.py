@@ -338,7 +338,7 @@ def test_feature_branch__nested_calls__raises_pygitops_error(mocker, tmp_path):
 
     some_branch_name = "some-feature-branch"
     timeout_message = re.escape(
-        "The timeout of 10 seconds was exceeded when attempting to acquire the lockfile: lockfiles/some-repo-name_lock_file.lock"
+        f"The timeout of 10 seconds was exceeded when attempting to acquire the lockfile: lockfiles/{SOME_REPO_NAME}_lock_file.lock"
     )
     origin_mock = mocker.Mock(refs=[GIT_BRANCH_MASTER])
     remotes_mock = mocker.Mock(origin=origin_mock)
@@ -350,7 +350,6 @@ def test_feature_branch__nested_calls__raises_pygitops_error(mocker, tmp_path):
         remotes=remotes_mock,
         working_dir=SOME_REPO_NAME,
         heads={GIT_BRANCH_MASTER: local_master_branch},
-        create_head=mocker.Mock(),
         git=mocker.Mock(symbolic_ref=mocker.Mock(return_value=SOME_HEAD_REF)),
     )
 
