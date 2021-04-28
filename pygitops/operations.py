@@ -7,25 +7,20 @@ from typing import Iterator, List, Optional
 from filelock import FileLock
 from git import Actor, GitError, Repo
 
-from pygitops._constants import KNOWN_DEFAULT_BRANCHES
 from pygitops._util import checkout_pull_branch as _checkout_pull_branch
 from pygitops._util import get_lockfile_path as _get_lockfile_path
 from pygitops._util import lock_repo as _lock_repo
 from pygitops._util import push_error_present as _push_error_present
-from pygitops.exceptions import (
-    PyGitOpsError,
-    PyGitOpsStagedItemsError,
-    PyGitOpsValueError,
-)
+from pygitops.exceptions import PyGitOpsError, PyGitOpsStagedItemsError
 from pygitops.remote_git_utils import _scrub_github_auth
-from pygitops.types import GitBranchType, GitDefaultBranch, PathOrStr
+from pygitops.types import PathOrStr
 
 _logger = logging.getLogger(__name__)
 
 
 def stage_commit_push_changes(
     repo: Repo,
-    branch: GitBranchType,
+    branch_name: str,
     actor: Actor,
     commit_message: str,
     items_to_stage: Optional[List[Path]] = None,
@@ -36,16 +31,13 @@ def stage_commit_push_changes(
     This includes staging, committing, and pushing the local changes.
 
     :param repo: Repository object.
-    :param branch: Feature branch from which changes will be committed and pushed.
+    :param branch_name: Feature branch from which changes will be committed and pushed.
     :param actor: The Github actor with which to perform the commit operation.
     :param commit_message: Text to be used as the commit message.
     :param items_to_stage: List of files and directories that will be staged for commit, if None will include all changes.
     :raises PyGitOpsStagedItemsError: There were no items to stage.
     :raises PyGitOpsError: There was an error staging, committing, or pushing code.
     """
-
-    branch_name = _get_branch_name(repo, branch)
-
     index = repo.index
     workdir_path = Path(repo.working_dir)
 
@@ -83,7 +75,7 @@ def stage_commit_push_changes(
 
 
 @contextmanager
-def feature_branch(repo: Repo, branch: GitBranchType) -> Iterator[None]:
+def feature_branch(repo: Repo, branch_name: str) -> Iterator[None]:
     """
     Checkout the desired feature branch.
 
@@ -97,11 +89,9 @@ def feature_branch(repo: Repo, branch: GitBranchType) -> Iterator[None]:
     *** Assumes default branch is checked out, otherwise raises PyGitOpsError ***
 
     :param repo: Repository object
-    :param branch: GitBranchType object indicating the branch we would like to checkout
+    :param branch_name: str object indicating the branch we would like to checkout
     :raises PyGitOpsError: There was an error performing the feature branch operation.
     """
-
-    branch_name = _get_branch_name(repo, branch)
     default_branch = get_default_branch(repo)
 
     untracked_files = repo.untracked_files
@@ -212,7 +202,6 @@ def get_default_branch(repo: Repo) -> str:
     :param repo: git.Repo instance.
     :return: string representing name of default branch.
     """
-
     git_ref_regex = r"refs\/remotes\/origin\/(\w*)"
     symbolic_ref_head = "refs/remotes/origin/HEAD"
 
@@ -238,28 +227,3 @@ def get_default_branch(repo: Repo) -> str:
         raise PyGitOpsError(
             f"The match object did not have a group in position {expected_position}"
         )
-
-
-def _get_branch_name(repo: Repo, branch: GitBranchType) -> str:
-    """
-    Get the string version of the provided branch name.
-
-    Helpful for resolving non string representations of git branches.
-
-    :param repo: git.Repo instance
-    :param branch: branch to resolve, either a plain string or a value allowable by the `GitBranchType`
-    :return: string representing name of default branch.
-    """
-
-    if isinstance(branch, str):
-        if branch in KNOWN_DEFAULT_BRANCHES:
-            raise PyGitOpsValueError(
-                f"The branch value of {branch} cannot be provided directly. Please instead provide `pygitops.GIT_DEFAULT_BRANCH` to indicate a reference to the default branch of the repository."
-            )
-        return branch
-    elif isinstance(branch, GitDefaultBranch):
-        return get_default_branch(repo)
-
-    raise PyGitOpsValueError(
-        f"The provided branch {branch} is not a valid GitBranchType"
-    )
