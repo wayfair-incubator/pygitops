@@ -3,7 +3,7 @@
 pygitops make it easy to make changes on a new, feature branch of a repo. In this guide, we'll see how by looking at the `feature_branch` context manager
 and the `stage_commit_push_changes` function.
 
-## feature_branch and stage_commit_push_changes
+## Example
 
 Here is an example using the `feature_branch` context manager and the `stage_commit_push_changes` function:
 
