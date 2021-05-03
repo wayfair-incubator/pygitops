@@ -29,12 +29,12 @@ with feature_branch(REPO, NEW_BRANCH_NAME):
     stage_commit_push_changes(REPO, NEW_BRANCH_NAME, ACTOR, COMMIT_MESSAGE)
 ```
 
-After we define the imports and constants (starting at the line with `with feature_branch(REPO, NEW_BRANCH_NAME):`),
+Focusing on the portion of the code starting at the line with `with feature_branch(REPO, NEW_BRANCH_NAME):`,
 we can generalize the workflow as:
 
 - Create a new, feature branch
 - Make changes
 - Stage, commit, and push changes
-- Return to default branch
+- Return to the default branch
 
 This is a common pattern when performing automating git workflows; using `feature_branch` and `stage_commit_push_changes` makes it easy to capture this flow in Python.
