@@ -37,4 +37,4 @@ we can generalize the workflow as:
 - Stage, commit, and push changes
 - Return to the default branch
 
-This is a common pattern when performing automating git workflows; using `feature_branch` and `stage_commit_push_changes` makes it easy to capture this flow in Python.
+This is a common pattern when automating git workflows; using `feature_branch` and `stage_commit_push_changes` makes it easy to capture this flow in Python.
