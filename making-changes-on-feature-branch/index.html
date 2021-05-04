@@ -14,7 +14,7 @@
     
     
       
-        <title>Development Guide - pygitops Documentation</title>
+        <title>Making Changes on a Feature Branch - pygitops Documentation</title>
       
     
     
@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#development-guide" class="md-skip">
+        <a href="#making-changes-on-a-feature-branch" class="md-skip">
           Skip to content
         </a>
       
@@ -94,7 +94,7 @@
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
             
-              Development Guide
+              Making Changes on a Feature Branch
             
           </span>
         </div>
@@ -185,12 +185,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
       
       <label class="md-nav__link" for="nav-2">
         Usage Guide
@@ -207,11 +209,49 @@
             
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../making-changes-on-feature-branch/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Making Changes on a Feature Branch
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Making Changes on a Feature Branch
       </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example" class="md-nav__link">
+    Example
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -229,104 +269,11 @@
 
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Development Guide
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../development-guide/" class="md-nav__link">
         Development Guide
       </a>
-      
-        
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#docker" class="md-nav__link">
-    Docker
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#debugging" class="md-nav__link">
-    Debugging
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
-    Testing
-  </a>
-  
-    <nav class="md-nav" aria-label="Testing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#stages" class="md-nav__link">
-    Stages
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setuppy" class="md-nav__link">
-    setup.py
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#publishing-the-package" class="md-nav__link">
-    Publishing the Package
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#continuous-integration-pipeline" class="md-nav__link">
-    Continuous Integration Pipeline
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -372,63 +319,8 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#docker" class="md-nav__link">
-    Docker
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#debugging" class="md-nav__link">
-    Debugging
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#testing" class="md-nav__link">
-    Testing
-  </a>
-  
-    <nav class="md-nav" aria-label="Testing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#stages" class="md-nav__link">
-    Stages
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#setuppy" class="md-nav__link">
-    setup.py
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#requirements" class="md-nav__link">
-    Requirements
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#publishing-the-package" class="md-nav__link">
-    Publishing the Package
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#continuous-integration-pipeline" class="md-nav__link">
-    Continuous Integration Pipeline
+  <a href="#example" class="md-nav__link">
+    Example
   </a>
   
 </li>
@@ -445,74 +337,45 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/wayfair-incubator/pygitops/edit/main/docs/development-guide.md" title="Edit this page" class="md-content__button md-icon">
+                  <a href="https://github.com/wayfair-incubator/pygitops/edit/main/docs/making-changes-on-feature-branch.md" title="Edit this page" class="md-content__button md-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
                   </a>
                 
                 
-                <h1 id="development-guide">Development Guide</h1>
-<p>Welcome - Thank you for wanting to make this project better! This section provides an overview on how the repository is structured
-and how to work with the codebase.</p>
-<p>Before you dive into this guide, please read the following first:</p>
+                <h1 id="making-changes-on-a-feature-branch">Making Changes on a Feature Branch</h1>
+<p>pygitops make it easy to make changes on a new, feature branch of a repo. In this guide, we'll see how by looking at the <code>feature_branch</code> context manager
+and the <code>stage_commit_push_changes</code> function.</p>
+<h2 id="example">Example</h2>
+<p>Here is an example using the <code>feature_branch</code> context manager and the <code>stage_commit_push_changes</code> function:</p>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+
+<span class="kn">from</span> <span class="nn">pygitops.operations</span> <span class="kn">import</span> <span class="n">feature_branch</span><span class="p">,</span> <span class="n">stage_commit_push_changes</span>
+<span class="kn">from</span> <span class="nn">git</span> <span class="kn">import</span> <span class="n">Actor</span><span class="p">,</span> <span class="n">Repo</span>
+
+<span class="n">NEW_FILE_NAME</span> <span class="o">=</span> <span class="s1">&#39;chores.txt&#39;</span>
+<span class="n">NEW_BRANCH_NAME</span> <span class="o">=</span> <span class="s1">&#39;adding-chores&#39;</span>
+<span class="n">ACTOR</span> <span class="o">=</span> <span class="n">Actor</span><span class="p">(</span><span class="s1">&#39;git-username&#39;</span><span class="p">,</span> <span class="s1">&#39;git-email@example.com&#39;</span><span class="p">)</span>
+<span class="n">COMMIT_MESSAGE</span> <span class="o">=</span> <span class="s1">&#39;Adding chores&#39;</span>
+
+<span class="c1"># create a Repo object in the current directory (see https://gitpython.readthedocs.io/en/stable/tutorial.html#meet-the-repo-type)</span>
+<span class="n">REPO</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rorepo</span><span class="o">.</span><span class="n">working_tree_dir</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="n">feature_branch</span><span class="p">(</span><span class="n">REPO</span><span class="p">,</span> <span class="n">NEW_BRANCH_NAME</span><span class="p">):</span>
+    <span class="c1"># create a new file with a list of chores</span>
+    <span class="n">Path</span><span class="p">(</span><span class="n">NEW_FILE_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s1">&#39;- [ ] haircut</span><span class="se">\n</span><span class="s1">- [ ] groceries</span><span class="se">\n</span><span class="s1">- [ ] dishes&#39;</span><span class="p">)</span>
+
+    <span class="c1"># stage, commit, and push these changes</span>
+    <span class="n">stage_commit_push_changes</span><span class="p">(</span><span class="n">REPO</span><span class="p">,</span> <span class="n">NEW_BRANCH_NAME</span><span class="p">,</span> <span class="n">ACTOR</span><span class="p">,</span> <span class="n">COMMIT_MESSAGE</span><span class="p">)</span>
+</code></pre></div>
+<p>Focusing on the portion of the code starting at the line with <code>with feature_branch(REPO, NEW_BRANCH_NAME):</code>,
+we can generalize the workflow as:</p>
 <ul>
-<li>The <a href="https://github.com/wayfair-incubator/pygitops/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a></li>
-<li>The <a href="https://github.com/wayfair-incubator/pygitops/blob/main/CONTRIBUTING.md">Contributing Guide</a></li>
+<li>Create a new, feature branch</li>
+<li>Make changes</li>
+<li>Stage, commit, and push changes</li>
+<li>Return to the default branch</li>
 </ul>
-<h2 id="docker">Docker</h2>
-<p>The pygitops project uses Docker to ease setting up a consistent development environment. The Docker documentation has
-details on how to <a href="https://docs.docker.com/install/">install Docker</a> and <a href="https://docs.docker.com/compose/install/">install Docker Compose</a> on your computer.</p>
-<p>Once you have installed Docker and Docker Compose, you can execute the test suite by running the following command from your terminal:</p>
-<div class="highlight"><pre><span></span><code>docker-compose run --rm <span class="nb">test</span>
-</code></pre></div>
-<p>If you want to be able to execute code in the container:</p>
-<div class="highlight"><pre><span></span><code>docker-compose run --rm devbox
-<span class="o">(</span>your code here<span class="o">)</span>
-</code></pre></div>
-<p>In the devbox environment you'll be able to enter a Python shell and import <code>pygitops</code> or any dependencies.
-The devbox environment also comes with <code>git-core</code> - a system dependency needed to run <code>gitpython</code>, our package's main dependency.</p>
-<h2 id="debugging">Debugging</h2>
-<p>The Docker container has <a href="https://github.com/pdbpp/pdbpp">pdb++</a> installed that can be used as a debugger. (However, you are welcome to set up
-a different debugger if you would like.)</p>
-<p>This allows you to easily create a breakpoint anywhere in the code.</p>
-<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">my_function</span><span class="p">():</span>
-    <span class="n">breakpoint</span><span class="p">()</span>
-    <span class="o">...</span>
-</code></pre></div>
-<p>When you run your code, you will drop into an interactive <code>pdb++</code> debugger.</p>
-<p>See the documentation on <a href="https://docs.python.org/3/library/pdb.html">pdb</a> and <a href="https://github.com/pdbpp/pdbpp#usage">pdb++</a> for more information.</p>
-<h2 id="testing">Testing</h2>
-<p>You'll be unable to merge code unless the linting and tests pass. You can run these in your container via:</p>
-<div class="highlight"><pre><span></span><code>docker-compose run --rm <span class="nb">test</span>
-</code></pre></div>
-<p>This will run the same tests, linting, and code coverage that are run by the CI pipeline. The only difference is that when run locally, <code>black</code> and <code>isort</code> are configured to automatically correct issues they detect.</p>
-<p>Generally we should endeavor to write tests for every feature. Every new feature branch should increase the test
-coverage rather than decrease it.</p>
-<p>We use <a href="https://docs.pytest.org/en/latest/">pytest</a> as our testing framework.</p>
-<h4 id="stages">Stages</h4>
-<p>To customize / override a specific testing stage, please read the documentation specific to that tool:</p>
-<ol>
-<li><a href="https://docs.pytest.org/en/latest/">PyTest</a></li>
-<li><a href="https://mypy.readthedocs.io/en/stable/">MyPy</a></li>
-<li><a href="https://black.readthedocs.io/en/stable/">Black</a></li>
-<li><a href="https://pycqa.github.io/isort/">Isort</a></li>
-<li><a href="http://flake8.pycqa.org/en/stable/">Flake8</a></li>
-<li><a href="https://bandit.readthedocs.io/en/stable/">Bandit</a></li>
-</ol>
-<h3 id="setuppy"><code>setup.py</code></h3>
-<p>Setuptools is used to package the library.</p>
-<p><strong><code>setup.py</code> must not import anything from the package</strong> When installing from source, the user may not have the
-packages' dependencies installed, and importing the package is likely to raise an <code>ImportError</code>. For this reason, the
-<strong>package version should be obtained without importing</strong>. This explains why <code>setup.py</code> uses a regular expression to
-grab the version from <code>__init__.py</code> without actually importing any dependencies.</p>
-<h3 id="requirements">Requirements</h3>
-<ul>
-<li><strong>requirements.txt</strong> - Lists all direct dependencies (packages imported by the library).</li>
-<li><strong>Requirements-test.txt</strong> - Lists all direct requirements needed to run the test suite &amp; lints.</li>
-</ul>
-<h2 id="publishing-the-package">Publishing the Package</h2>
-<p>TODO: Document package publish process</p>
-<h2 id="continuous-integration-pipeline">Continuous Integration Pipeline</h2>
-<p>TODO: Add CI documentation.</p>
+<p>This is a common pattern when automating git workflows; using <code>feature_branch</code> and <code>stage_commit_push_changes</code> makes it easy to capture this flow in Python.</p>
                 
               
               
@@ -531,7 +394,7 @@ grab the version from <code>__init__.py</code> without actually importing any de
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
         
-          <a href="../making-changes-on-feature-branch/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+          <a href=".." class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
             <div class="md-footer-nav__button md-icon">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
             </div>
@@ -540,19 +403,19 @@ grab the version from <code>__init__.py</code> without actually importing any de
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                Making Changes on a Feature Branch
+                Overview
               </div>
             </div>
           </a>
         
         
-          <a href="../api/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+          <a href="../development-guide/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
             <div class="md-footer-nav__title">
               <div class="md-ellipsis">
                 <span class="md-footer-nav__direction">
                   Next
                 </span>
-                Reference
+                Development Guide
               </div>
             </div>
             <div class="md-footer-nav__button md-icon">
