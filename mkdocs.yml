@@ -5,8 +5,6 @@ edit_uri: edit/main/docs/
 docs_dir: docs
 nav:
   - Overview: index.md
-  - Usage Guide:
-    - making-changes-on-feature-branch.md
   - Why pygitops?: why-pygitops.md
   - Development Guide: development-guide.md
   - Reference: api.md
