@@ -11,8 +11,8 @@ Pygitops extensively uses and owes a debt of gratitude to the GitPython package 
 What is the difference between GitPython and pygitops?
 
 The primary difference between GitPython and pygitops is one of generalization.
-GitPython has, relative to pygitops, a small amount of generalization. It provides relatively low-level access to git functions and objects.
-Pygitops has a relatively large amount of generalization. It provides higher-level access to git functionality.
+GitPython has, relative to pygitops, a small amount of generalization. It provides relatively low-level access to Git functions and objects.
+Pygitops has a relatively large amount of generalization. It provides higher-level access to Git functionality.
 
 Another difference is that pygitops is built around operations (functions and [context managers](https://docs.python.org/3/reference/datamodel.html#context-managers)) while
 GitPython takes a more object-oriented approach basing most of its functionality on objects and their methods.
@@ -31,4 +31,4 @@ transfer to GitPython for the rest of your journey.
 
 ### Others?
 
-Other than pygitops, there are very few maintained, high-level, git utility libraries we are aware of. As such, we started pygitops.
+Other than pygitops, there are very few maintained, high-level, Git utility libraries we are aware of. As such, we started pygitops.
