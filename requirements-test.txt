@@ -3,7 +3,7 @@ black==21.5b0
 flake8==3.9.1
 isort==5.8.0
 mypy==0.812
-mkdocs-material==6.2.5
+mkdocs-material==7.1.3
 mkdocstrings==0.15.0
 pytest==6.2.4
 pytest-cov==2.11.1
