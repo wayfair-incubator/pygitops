@@ -174,7 +174,7 @@ def get_updated_repo(
     # Lock the following operation such that only one process will attempt to clone the repo at a time.
     with FileLock(str(git_lockfile_path)):
         try:
-            # only clone the project if the local checkout doesnt exist
+            # if the repo already exists, don't clone it
             if dest_repo_path.is_dir():
                 repo = Repo(dest_repo_path)
                 # pull down latest changes from `branch` if provided in kwargs, deferring to repo default branch
