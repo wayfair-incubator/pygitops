@@ -7,3 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 This package does not yet have a release
+
+## [0.10.0] - 2021-05-07
+
+### Added
+
+- First public release!!!
