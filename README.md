@@ -9,8 +9,11 @@
 
 Wrapper for low-level git logic. Useful for systems automating git operations.
 
+For more information, please see the [pygitops docs][pygitops-docs]
+
 [ci]: https://github.com/wayfair-incubator/pygitops/actions
 [pypi]: https://pypi.org/project/pygitops/
 [codecov]: https://codecov.io/gh/wayfair-incubator/pygitops
 [mypy-home]: http://mypy-lang.org/
 [black-home]: https://github.com/psf/black
+[pygitops-docs]: https://wayfair-incubator.github.io/pygitops/
