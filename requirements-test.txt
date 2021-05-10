@@ -7,5 +7,5 @@ mkdocs-material==6.2.5
 mkdocstrings==0.15.0
 pytest==6.2.4
 pytest-cov==2.11.1
-pytest-mock==3.6.0
+pytest-mock==3.6.1
 pdbpp
