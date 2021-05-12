@@ -126,7 +126,6 @@ jobs:
           # Use always() to always run this step to publish test results when there are test failures
           if: ${{ always() }}
 
-         enable this when the `wayfair-incubator/pygitops` repo is public, codecov.io cannot access private repositories
         - name: Publish coverage results to Codecov
           uses: codecov/codecov-action@v1.0.13
           with:
