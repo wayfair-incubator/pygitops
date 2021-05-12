@@ -17,3 +17,4 @@ For more information, please see the [pygitops docs][pygitops-docs]
 [mypy-home]: http://mypy-lang.org/
 [black-home]: https://github.com/psf/black
 [pygitops-docs]: https://wayfair-incubator.github.io/pygitops/
+
