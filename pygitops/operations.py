@@ -11,6 +11,7 @@ from pygitops._util import checkout_pull_branch as _checkout_pull_branch
 from pygitops._util import get_lockfile_path as _get_lockfile_path
 from pygitops._util import lock_repo as _lock_repo
 from pygitops._util import push_error_present as _push_error_present
+from pygitops._util import is_git_repo as _is_git_repo
 from pygitops.exceptions import PyGitOpsError, PyGitOpsStagedItemsError
 from pygitops.remote_git_utils import _scrub_github_auth
 from pygitops.types import PathOrStr
@@ -153,7 +154,7 @@ def feature_branch(repo: Repo, branch_name: str) -> Iterator[None]:
 
 
 def get_updated_repo(
-    repo_url: str, clone_dir: PathOrStr, repo_name: str, **kwargs
+    repo_url: str, clone_dir: PathOrStr, **kwargs
 ) -> Repo:
     """
     Clone the default branch of the target repository, returning a repo object.
@@ -162,32 +163,30 @@ def get_updated_repo(
 
     :param repo_url: URL of the Github repository to be cloned.
     :param clone_dir: The root directory where repositories are cloned.
-    :param repo_name: The name of the repository to be cloned.
     :raises PyGitOpsError: There was an error cloning the repository.
     """
     # make sure it's actually a Path if our user passed a str
     clone_dir = Path(clone_dir)
 
-    dest_repo_path = clone_dir / repo_name
-    git_lockfile_path = _get_lockfile_path(repo_name)
+    git_lockfile_path = _get_lockfile_path(clone_dir)
 
     # Lock the following operation such that only one process will attempt to clone the repo at a time.
     with FileLock(str(git_lockfile_path)):
         try:
             # if the repo already exists, don't clone it
-            if dest_repo_path.is_dir():
-                repo = Repo(dest_repo_path)
+            if _is_git_repo(clone_dir):
+                repo = Repo(clone_dir)
                 # pull down latest changes from `branch` if provided in kwargs, deferring to repo default branch
                 branch = kwargs.get("branch") or get_default_branch(repo)
                 _checkout_pull_branch(repo, branch)
                 return repo
 
-            return Repo.clone_from(repo_url, dest_repo_path, **kwargs)
+            return Repo.clone_from(repo_url, clone_dir, **kwargs)
         except GitError as e:
             clean_repo_url = _scrub_github_auth(repo_url)
             scrubbed_error_message = _scrub_github_auth(str(e))
             raise PyGitOpsError(
-                f"Error cloning repo {clean_repo_url} into destination path {dest_repo_path}: {scrubbed_error_message}"
+                f"Error cloning repo {clean_repo_url} into destination path {clone_dir}: {scrubbed_error_message}"
             ) from e
 
 

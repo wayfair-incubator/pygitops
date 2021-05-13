@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 from filelock import Timeout
-from git import PushInfo
+from git import PushInfo, Repo
 
 from pygitops._util import (
     _lockfile_path,
@@ -12,6 +12,7 @@ from pygitops._util import (
     get_lockfile_path,
     lock_repo,
     push_error_present,
+    is_git_repo
 )
 from pygitops.exceptions import PyGitOpsError
 
@@ -147,3 +148,12 @@ def test_pull_branch__branch_not_in_refs__raises_pygitops_error(mocker):
 
     with pytest.raises(PyGitOpsError):
         checkout_pull_branch(repo, "test_branch")
+
+
+def test_is_git_repo__not_a_git_repo__returns_false(tmp_path):
+    assert is_git_repo(tmp_path) is False
+
+
+def test_is_git_repo__is_a_git_repo__returns_true(tmp_path):
+    _repo = Repo.init(tmp_path)
+    assert is_git_repo(tmp_path)

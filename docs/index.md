@@ -30,7 +30,7 @@ repo_name = 'pygitops'
 
 repo_url = build_github_repo_url(service_account_name, service_account_token, repo_owner, repo_name)
 
-repo = get_updated_repo(repo_url, '/repos', repo_name)
+repo = get_updated_repo(repo_url, f'/repos/{repo_name}')
 ```
 
 ### Using GitPython
