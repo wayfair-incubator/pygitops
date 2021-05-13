@@ -7,6 +7,7 @@ from typing import Iterator
 from filelock import FileLock, Timeout
 from git import PushInfo, Repo
 from git.exc import InvalidGitRepositoryError
+
 from pygitops.exceptions import PyGitOpsError
 
 _logger = logging.getLogger(__name__)

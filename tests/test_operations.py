@@ -178,9 +178,7 @@ def test_stage_commit_push_changes__with_staged_files__adds_only_requested_file(
         assert [other_file] == local_repo.untracked_files
 
 
-def test_stage_commit_push_changes__no_files_to_stage__raises_pygitops_error(
-    tmp_path
-):
+def test_stage_commit_push_changes__no_files_to_stage__raises_pygitops_error(tmp_path):
 
     repos = _initialize_multiple_empty_repos(tmp_path)
     local_repo = repos.local_repo
@@ -391,7 +389,7 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_de
     mocker, tmp_path
 ):
 
-    _repo = Repo.init(tmp_path)
+    Repo.init(tmp_path)
     master_branch_mock = mocker.Mock()
     repo_mock = mocker.Mock(
         heads={"master": master_branch_mock},
@@ -410,16 +408,14 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_pr
 ):
 
     repo_mock = mocker.Mock()
-    _repo = Repo.init(tmp_path)
+    Repo.init(tmp_path)
     get_default_branch_mock = mocker.patch("pygitops.operations.get_default_branch")
     _checkout_pull_branch_mock = mocker.patch(
         "pygitops.operations._checkout_pull_branch"
     )
     mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
 
-    get_updated_repo(
-        SOME_CLONE_REPO_URL, tmp_path, branch=SOME_FEATURE_BRANCH
-    )
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, branch=SOME_FEATURE_BRANCH)
 
     get_default_branch_mock.assert_not_called()
     _checkout_pull_branch_mock.assert_called_once_with(repo_mock, SOME_FEATURE_BRANCH)
@@ -531,16 +527,17 @@ def test_get_updated_repo__error__login_scrubbed(mocker):
     assert SOME_SERVICE_ACCOUNT_TOKEN not in exception_text
 
 
-def test_get_updated_repo__clone_dir_as_str(mocker):
+def test_get_updated_repo__clone_dir_as_str(mocker, tmp_path):
 
     clone_from_mock = mocker.patch(
         "pygitops.operations.Repo.clone_from",
     )
 
-    get_updated_repo(SOME_CLONE_REPO_URL, "clone_dir")
+    mocker.patch("pygitops.operations._is_git_repo", mocker.Mock(return_value=False))
+    get_updated_repo(SOME_CLONE_REPO_URL, str(tmp_path))
 
     assert clone_from_mock.called
-    assert clone_from_mock.call_args[0][1] == PosixPath("clone_dir/some-repo-name")
+    assert clone_from_mock.call_args[0][1] == PosixPath(str(tmp_path))
 
 
 def test_get_default_branch__match_not_present__raises_pygitops_error(mocker):
@@ -584,9 +581,7 @@ def test_get_default_branch__default_branch_returned(tmp_path):
     assert get_default_branch(local_repo) == remote_repo.heads[0].name
 
 
-def test_get_default_branch__remote_head_changes__new_default_branch_returned(
-    tmp_path
-):
+def test_get_default_branch__remote_head_changes__new_default_branch_returned(tmp_path):
 
     repos = _initialize_multiple_empty_repos(tmp_path)
     remote_repo = repos.remote_repo

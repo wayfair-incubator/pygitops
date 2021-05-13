@@ -9,9 +9,9 @@ from git import Actor, GitError, Repo
 
 from pygitops._util import checkout_pull_branch as _checkout_pull_branch
 from pygitops._util import get_lockfile_path as _get_lockfile_path
+from pygitops._util import is_git_repo as _is_git_repo
 from pygitops._util import lock_repo as _lock_repo
 from pygitops._util import push_error_present as _push_error_present
-from pygitops._util import is_git_repo as _is_git_repo
 from pygitops.exceptions import PyGitOpsError, PyGitOpsStagedItemsError
 from pygitops.remote_git_utils import _scrub_github_auth
 from pygitops.types import PathOrStr
@@ -153,9 +153,7 @@ def feature_branch(repo: Repo, branch_name: str) -> Iterator[None]:
             )
 
 
-def get_updated_repo(
-    repo_url: str, clone_dir: PathOrStr, **kwargs
-) -> Repo:
+def get_updated_repo(repo_url: str, clone_dir: PathOrStr, **kwargs) -> Repo:
     """
     Clone the default branch of the target repository, returning a repo object.
 
@@ -168,7 +166,7 @@ def get_updated_repo(
     # make sure it's actually a Path if our user passed a str
     clone_dir = Path(clone_dir)
 
-    git_lockfile_path = _get_lockfile_path(clone_dir)
+    git_lockfile_path = _get_lockfile_path(str(clone_dir))
 
     # Lock the following operation such that only one process will attempt to clone the repo at a time.
     with FileLock(str(git_lockfile_path)):

@@ -10,9 +10,9 @@ from pygitops._util import (
     _lockfile_path,
     checkout_pull_branch,
     get_lockfile_path,
+    is_git_repo,
     lock_repo,
     push_error_present,
-    is_git_repo
 )
 from pygitops.exceptions import PyGitOpsError
 
@@ -155,5 +155,5 @@ def test_is_git_repo__not_a_git_repo__returns_false(tmp_path):
 
 
 def test_is_git_repo__is_a_git_repo__returns_true(tmp_path):
-    _repo = Repo.init(tmp_path)
+    Repo.init(tmp_path)
     assert is_git_repo(tmp_path)
