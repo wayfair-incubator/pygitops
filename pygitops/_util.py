@@ -110,11 +110,11 @@ def is_git_repo(path: Path) -> bool:
     """
     Determine if a given path is a valid git repository.
 
-    :param path: Directory to determine is a directory
+    :param path: Directory to inspect
     :return: True if the contents of a directory at given path contains a valid git repository
     """
     try:
-        _ = Repo(path).git_dir
+        Repo(path).git_dir
         return True
     except InvalidGitRepositoryError:
         return False
