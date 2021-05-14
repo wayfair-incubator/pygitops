@@ -6,6 +6,7 @@ from typing import Iterator
 
 from filelock import FileLock, Timeout
 from git import PushInfo, Repo
+from git.exc import InvalidGitRepositoryError
 
 from pygitops.exceptions import PyGitOpsError
 
@@ -103,3 +104,17 @@ def push_error_present(push_info: PushInfo) -> bool:
     Check for presence of the error flag in the returned flags bitmask.
     """
     return bool(push_info.flags & push_info.ERROR)
+
+
+def is_git_repo(path: Path) -> bool:
+    """
+    Determine if a given path is a valid git repository.
+
+    :param path: Directory to inspect
+    :return: True if the contents of a directory at given path contains a valid git repository
+    """
+    try:
+        Repo(path).git_dir
+        return True
+    except InvalidGitRepositoryError:
+        return False

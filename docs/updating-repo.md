@@ -23,9 +23,9 @@ Below is an example which clones the [Columbo repository][columbo-repo] into the
 ```python
 from pygitops.operations import get_updated_repo
 
-repo = get_updated_repo('https://github.com/wayfair-incubator/columbo.git', '~/repos', 'columbo')
+repo = get_updated_repo('https://github.com/wayfair-incubator/columbo.git', '~/repos/columbo')
 ```
 
-Again, the value of this function is that you don't have to know if the Columbo repo has already been cloned. If you run `repo = get_updated_repo('https://github.com/wayfair-incubator/columbo.git', '~/repos', 'columbo')` again, it will not clone the repo again, but will only pull updates from the default branch.
+Again, the value of this function is that you don't have to know if the Columbo repo has already been cloned. If you run `repo = get_updated_repo('https://github.com/wayfair-incubator/columbo.git', '~/repos/columbo')` again, it will not clone the repo again, but will only pull updates from the default branch.
 
 [columbo-repo]: https://github.com/wayfair-incubator/columbo

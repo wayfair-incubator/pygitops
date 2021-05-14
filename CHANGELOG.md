@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-This package does not yet have a release
+## [0.11.0] - 2021-05-14
+
+### Changed
+
+* Removed `repo_name` parameter of the `get_updated_repo` function to give the user control of exactly where to clone the repo contents to. The `clone_dir` argument is now the directory into which the contents of the repo will be cloned.
 
 ## [0.10.0] - 2021-05-07
 

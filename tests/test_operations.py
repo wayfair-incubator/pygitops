@@ -68,7 +68,7 @@ def test_stage_commit_push_changes__push_failure__raises_pygitops_error(
             )
 
 
-def test_stage_commit_push_changes__add_new_file__change_persisted(mocker, tmp_path):
+def test_stage_commit_push_changes__add_new_file__change_persisted(tmp_path):
     """
     Configure 'local' and 'remote' repositories with initial content.
 
@@ -97,7 +97,7 @@ def test_stage_commit_push_changes__add_new_file__change_persisted(mocker, tmp_p
             remote_repo.heads[SOME_FEATURE_BRANCH].checkout()
 
 
-def test_stage_commit_push_changes__remove_old_file__change_persisted(mocker, tmp_path):
+def test_stage_commit_push_changes__remove_old_file__change_persisted(tmp_path):
     """
     Configure 'local' and 'remote' repositories with initial content.
 
@@ -178,9 +178,7 @@ def test_stage_commit_push_changes__with_staged_files__adds_only_requested_file(
         assert [other_file] == local_repo.untracked_files
 
 
-def test_stage_commit_push_changes__no_files_to_stage__raises_pygitops_error(
-    mocker, tmp_path
-):
+def test_stage_commit_push_changes__no_files_to_stage__raises_pygitops_error(tmp_path):
 
     repos = _initialize_multiple_empty_repos(tmp_path)
     local_repo = repos.local_repo
@@ -301,7 +299,7 @@ def test_feature_branch__conditional_branch_checkout(
     assert feature_branch_mock.checkout.called == checkout_expected
 
 
-def test_feature_branch__exception_within_context__cleanup_occurs(mocker, tmp_path):
+def test_feature_branch__exception_within_context__cleanup_occurs(mocker):
 
     some_branch_name = "some-feature-branch"
     origin_mock = mocker.Mock(refs=[GIT_BRANCH_MASTER])
@@ -327,7 +325,7 @@ def test_feature_branch__exception_within_context__cleanup_occurs(mocker, tmp_pa
     local_master_branch.checkout.assert_called_once()
 
 
-def test_feature_branch__nested_calls__raises_pygitops_error(mocker, tmp_path):
+def test_feature_branch__nested_calls__raises_pygitops_error(mocker):
     """Make sure the feature_branch context manager locks the repo correctly."""
 
     some_branch_name = "some-feature-branch"
@@ -362,30 +360,28 @@ def test_get_updated_repo__git_error_raised_by_repo__raises_pygitops_error(mocke
     mocker.patch("pygitops.operations.Repo.clone_from", side_effect=GitError)
 
     with pytest.raises(PyGitOpsError):
-        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
+        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH)
 
 
 def test_get_updated_repo__repo_dne__fresh_clone_performed(mocker, tmp_path):
 
     clone_from_mock = mocker.patch("pygitops.operations.Repo.clone_from")
-    expected_clone_path = tmp_path / SOME_REPO_NAME
 
-    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, SOME_REPO_NAME)
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path)
 
-    clone_from_mock.assert_called_once_with(SOME_CLONE_REPO_URL, expected_clone_path)
+    clone_from_mock.assert_called_once_with(SOME_CLONE_REPO_URL, tmp_path)
 
 
 def test_get_updated_repo__repo_dne__kwargs_passed_to_clone_from(mocker, tmp_path):
 
     clone_from_mock = mocker.patch("pygitops.operations.Repo.clone_from")
-    expected_clone_path = tmp_path / SOME_REPO_NAME
 
     some_kwargs = {"some_arg": "some-value", "another_arg": "another-value"}
 
-    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, SOME_REPO_NAME, **some_kwargs)
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, **some_kwargs)
 
     clone_from_mock.assert_called_once_with(
-        SOME_CLONE_REPO_URL, expected_clone_path, **some_kwargs
+        SOME_CLONE_REPO_URL, tmp_path, **some_kwargs
     )
 
 
@@ -393,8 +389,7 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_de
     mocker, tmp_path
 ):
 
-    (tmp_path / SOME_REPO_NAME).mkdir()
-
+    Repo.init(tmp_path)
     master_branch_mock = mocker.Mock()
     repo_mock = mocker.Mock(
         heads={"master": master_branch_mock},
@@ -402,7 +397,7 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_de
     )
     mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
 
-    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, SOME_REPO_NAME)
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path)
 
     master_branch_mock.checkout.assert_called_once()
     repo_mock.remotes.origin.pull.assert_called_once()
@@ -412,21 +407,29 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_pr
     mocker, tmp_path
 ):
 
-    (tmp_path / SOME_REPO_NAME).mkdir()
     repo_mock = mocker.Mock()
-
+    Repo.init(tmp_path)
     get_default_branch_mock = mocker.patch("pygitops.operations.get_default_branch")
     _checkout_pull_branch_mock = mocker.patch(
         "pygitops.operations._checkout_pull_branch"
     )
     mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
 
-    get_updated_repo(
-        SOME_CLONE_REPO_URL, tmp_path, SOME_REPO_NAME, branch=SOME_FEATURE_BRANCH
-    )
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, branch=SOME_FEATURE_BRANCH)
 
     get_default_branch_mock.assert_not_called()
     _checkout_pull_branch_mock.assert_called_once_with(repo_mock, SOME_FEATURE_BRANCH)
+
+
+def test_get_updated_repo__clone_dirs_dne__clone_dirs_created(mocker, tmp_path):
+
+    clone_dir = tmp_path / "some_parent" / "repo"
+    repo_mock = mocker.Mock()
+    mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
+
+    get_updated_repo(SOME_CLONE_REPO_URL, clone_dir)
+
+    assert clone_dir.exists()
 
 
 def test_get_updated_repo__file_operations__repo_not_present(tmp_path):
@@ -439,13 +442,15 @@ def test_get_updated_repo__file_operations__repo_not_present(tmp_path):
 
     # initialize remote repo
     remote_path = tmp_path / "remote"
+    local_path = tmp_path / "local"
+    local_path.mkdir()
     remote_repo = _initialize_repo_with_content(remote_path)
 
     # write and commit some content in the remote repo
     _commit_content(remote_repo, SOME_INITIAL_CONTENT)
 
     # clone remote repo to local
-    local_repo = get_updated_repo(str(remote_path), tmp_path, SOME_LOCAL_REPO_NAME)
+    local_repo = get_updated_repo(str(remote_path), local_path)
 
     filepath = f"{local_repo.working_tree_dir}/{SOME_CONTENT_FILENAME}"
 
@@ -460,9 +465,11 @@ def test_get_updated_repo__local_repo_on_disk__remote_default_branch_changes__re
 ):
 
     remote_path = tmp_path / "remote"
+    local_path = tmp_path / "local"
+    local_path.mkdir()
     remote_repo = _initialize_repo_with_content(remote_path)
 
-    local_repo = get_updated_repo(str(remote_path), tmp_path, SOME_LOCAL_REPO_NAME)
+    local_repo = get_updated_repo(str(remote_path), local_path)
 
     assert local_repo.active_branch.name != SOME_DEFAULT_BRANCH_NAME
 
@@ -470,7 +477,7 @@ def test_get_updated_repo__local_repo_on_disk__remote_default_branch_changes__re
     default_head = remote_repo.create_head(SOME_DEFAULT_BRANCH_NAME)
     remote_repo.head.set_reference(default_head)
 
-    local_repo = get_updated_repo(str(remote_path), tmp_path, SOME_LOCAL_REPO_NAME)
+    local_repo = get_updated_repo(str(remote_path), local_path)
     assert local_repo.active_branch.name == SOME_DEFAULT_BRANCH_NAME
 
 
@@ -486,20 +493,22 @@ def test_get_updated_repo__file_operations__repo_present_locally(tmp_path):
 
     # initialize remote repo
     remote_path = tmp_path / "remote"
+    local_path = tmp_path / "local"
+    local_path.mkdir()
     remote_repo = _initialize_repo_with_content(remote_path)
 
     # write and commit some content in the remote repo
     _commit_content(remote_repo, SOME_INITIAL_CONTENT)
 
     # setup the preconditions outlined in our test case description
-    local_repo = get_updated_repo(str(remote_path), tmp_path, SOME_LOCAL_REPO_NAME)
+    local_repo = get_updated_repo(str(remote_path), local_path)
     local_repo.create_head(SOME_FEATURE_BRANCH)
     local_repo.heads[SOME_FEATURE_BRANCH].checkout()
     _commit_content(remote_repo, SOME_NEW_CONTENT)
 
     # act, asserting expected state before and after operation
     with _assert_get_updated_repo_state(local_repo):
-        get_updated_repo(str(remote_path), tmp_path, SOME_LOCAL_REPO_NAME)
+        get_updated_repo(str(remote_path), local_path)
 
 
 def test_get_updated_repo__error__login_not_in_error(mocker):
@@ -510,7 +519,7 @@ def test_get_updated_repo__error__login_not_in_error(mocker):
     )
 
     with pytest.raises(PyGitOpsError) as exc_info:
-        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
+        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH)
 
     assert SOME_SERVICE_ACCOUNT_TOKEN not in str(exc_info.value)
 
@@ -522,23 +531,24 @@ def test_get_updated_repo__error__login_scrubbed(mocker):
     )
 
     with pytest.raises(PyGitOpsError) as exc_info:
-        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH, SOME_REPO_NAME)
+        get_updated_repo(SOME_CLONE_REPO_URL, SOME_CLONE_PATH)
 
     exception_text = str(exc_info.value)
     assert "https://***:***@" in exception_text
     assert SOME_SERVICE_ACCOUNT_TOKEN not in exception_text
 
 
-def test_get_updated_repo__clone_dir_as_str(mocker):
+def test_get_updated_repo__clone_dir_as_str(mocker, tmp_path):
 
     clone_from_mock = mocker.patch(
         "pygitops.operations.Repo.clone_from",
     )
 
-    get_updated_repo(SOME_CLONE_REPO_URL, "clone_dir", SOME_REPO_NAME)
+    mocker.patch("pygitops.operations._is_git_repo", mocker.Mock(return_value=False))
+    get_updated_repo(SOME_CLONE_REPO_URL, str(tmp_path))
 
     assert clone_from_mock.called
-    assert clone_from_mock.call_args[0][1] == PosixPath("clone_dir/some-repo-name")
+    assert clone_from_mock.call_args[0][1] == PosixPath(str(tmp_path))
 
 
 def test_get_default_branch__match_not_present__raises_pygitops_error(mocker):
@@ -572,7 +582,7 @@ def test_get_default_branch__match_index_error__raises_pygitops_error(mocker):
         get_default_branch(repo_mock)
 
 
-def test_get_default_branch__default_branch_returned(mocker, tmp_path):
+def test_get_default_branch__default_branch_returned(tmp_path):
 
     repos = _initialize_multiple_empty_repos(tmp_path)
     remote_repo = repos.remote_repo
@@ -582,9 +592,7 @@ def test_get_default_branch__default_branch_returned(mocker, tmp_path):
     assert get_default_branch(local_repo) == remote_repo.heads[0].name
 
 
-def test_get_default_branch__remote_head_changes__new_default_branch_returned(
-    mocker, tmp_path
-):
+def test_get_default_branch__remote_head_changes__new_default_branch_returned(tmp_path):
 
     repos = _initialize_multiple_empty_repos(tmp_path)
     remote_repo = repos.remote_repo
