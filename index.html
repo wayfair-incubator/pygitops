@@ -484,7 +484,7 @@
 
 <span class="n">repo_url</span> <span class="o">=</span> <span class="n">build_github_repo_url</span><span class="p">(</span><span class="n">service_account_name</span><span class="p">,</span> <span class="n">service_account_token</span><span class="p">,</span> <span class="n">repo_owner</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">)</span>
 
-<span class="n">repo</span> <span class="o">=</span> <span class="n">get_updated_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">,</span> <span class="s1">&#39;/repos&#39;</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">)</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="n">get_updated_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;/repos/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
 <h3 id="using-gitpython">Using GitPython</h3>
 <p>The <code>repo</code> returned by <code>get_updated_repo</code> is an instance of <code>git.Repo</code>, from the <a href="https://github.com/gitpython-developers/GitPython">GitPython</a> package. If you are already familiar with the package and need to leverage its functionality, <code>pygitops</code> won't get in your way!</p>

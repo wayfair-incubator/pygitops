@@ -587,7 +587,7 @@ This factory function is specific to github, and might not support url schemas o
 
 
 <h3 id="pygitops.operations.get_updated_repo" class="doc doc-heading">
-<code class="highlight language-python"><span class="n">get_updated_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_dir</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+<code class="highlight language-python"><span class="n">get_updated_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
 
 
 </h3>
@@ -617,13 +617,7 @@ This factory function is specific to github, and might not support url schemas o
       <tr>
         <td><code>clone_dir</code></td>
         <td><code>Union[pathlib.Path, str]</code></td>
-        <td><p>The root directory where repositories are cloned.</p></td>
-        <td><em>required</em></td>
-      </tr>
-      <tr>
-        <td><code>repo_name</code></td>
-        <td><code>str</code></td>
-        <td><p>The name of the repository to be cloned.</p></td>
+        <td><p>The empty directory to clone repository content to.</p></td>
         <td><em>required</em></td>
       </tr>
   </tbody>
