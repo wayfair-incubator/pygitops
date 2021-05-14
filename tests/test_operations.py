@@ -421,6 +421,17 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_pr
     _checkout_pull_branch_mock.assert_called_once_with(repo_mock, SOME_FEATURE_BRANCH)
 
 
+def test_get_updated_repo__clone_dirs_dne__clone_dirs_created(mocker, tmp_path):
+
+    clone_dir = tmp_path / "some_parent" / "repo"
+    repo_mock = mocker.Mock()
+    mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
+
+    get_updated_repo(SOME_CLONE_REPO_URL, clone_dir)
+
+    assert clone_dir.exists()
+
+
 def test_get_updated_repo__file_operations__repo_not_present(tmp_path):
     """
     A fresh clone of a repository should pull down remote content

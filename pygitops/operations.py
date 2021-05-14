@@ -166,6 +166,10 @@ def get_updated_repo(repo_url: str, clone_dir: PathOrStr, **kwargs) -> Repo:
     # make sure it's actually a Path if our user passed a str
     clone_dir = Path(clone_dir)
 
+    # if clone dir does not exist, create it, and all parent dirs
+    if not clone_dir.exists():
+        clone_dir.mkdir(parents=True)
+
     git_lockfile_path = _get_lockfile_path(str(clone_dir))
 
     # Lock the following operation such that only one process will attempt to clone the repo at a time.
