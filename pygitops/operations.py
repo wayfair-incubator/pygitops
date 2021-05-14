@@ -160,7 +160,7 @@ def get_updated_repo(repo_url: str, clone_dir: PathOrStr, **kwargs) -> Repo:
     If repo is already present, we will pull in the latest changes to the default branch of the repo.
 
     :param repo_url: URL of the Github repository to be cloned.
-    :param clone_dir: The root directory where repositories are cloned.
+    :param clone_dir: The empty directory to clone repository content to.
     :raises PyGitOpsError: There was an error cloning the repository.
     """
     # make sure it's actually a Path if our user passed a str
@@ -184,7 +184,7 @@ def get_updated_repo(repo_url: str, clone_dir: PathOrStr, **kwargs) -> Repo:
             clean_repo_url = _scrub_github_auth(repo_url)
             scrubbed_error_message = _scrub_github_auth(str(e))
             raise PyGitOpsError(
-                f"Error cloning repo {clean_repo_url} into destination path {clone_dir}: {scrubbed_error_message}"
+                f"Error cloning or updating repo {clean_repo_url} into destination path {clone_dir}: {scrubbed_error_message}"
             ) from e
 
 
