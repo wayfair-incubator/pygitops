@@ -8,9 +8,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.11.1] - 2021-05-17
 
-### Added
+### Fixed
 
-* Make 0.11.0 available
+* Properly increment version number to `0.11.1` (version `0.11.0` was not tagged properly so it was not pushed to PyPI)
 
 ## [0.11.0] - 2021-05-14
 
