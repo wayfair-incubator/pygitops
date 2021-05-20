@@ -1,0 +1,979 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1.2, mkdocs-material-7.1.4">
+    
+    
+      
+        <title>Reference - pygitops Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bde7dde4.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ef6f36e2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font-family:"Roboto";--md-code-font-family:"Roboto Mono"}</style>
+      
+    
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../css/mkdocstrings.css">
+    
+    
+      
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    <script>function __prefix(e){return new URL("..",location).pathname+"."+e}function __get(e,t=localStorage){return JSON.parse(t.getItem(__prefix(e)))}</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="pygitops Documentation" class="md-header__button md-logo" aria-label="pygitops Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            pygitops Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    
+      <div class="md-header__source">
+        
+<a href="https://github.com/wayfair-incubator/pygitops/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    wayfair-incubator/pygitops
+  </div>
+</a>
+      </div>
+    
+  </nav>
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="pygitops Documentation" class="md-nav__button md-logo" aria-label="pygitops Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    pygitops Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      
+<a href="https://github.com/wayfair-incubator/pygitops/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    wayfair-incubator/pygitops
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      <label class="md-nav__link" for="__nav_2">
+        Usage Guide
+        <span class="md-nav__icon md-icon"></span>
+      </label>
+      <nav class="md-nav" aria-label="Usage Guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Usage Guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../making-changes-on-feature-branch/" class="md-nav__link">
+        Making Changes on a Feature Branch
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../updating-repo/" class="md-nav__link">
+        Pulling Updated Repo
+      </a>
+    </li>
+  
+
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../why-pygitops/" class="md-nav__link">
+        Why pygitops?
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../development-guide/" class="md-nav__link">
+        Development Guide
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Reference
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Reference
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.remote_git_utils.build_github_repo_url" class="md-nav__link">
+    build_github_repo_url()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.operations.get_updated_repo" class="md-nav__link">
+    get_updated_repo()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.operations.get_default_branch" class="md-nav__link">
+    get_default_branch()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.operations.feature_branch" class="md-nav__link">
+    feature_branch()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.operations.stage_commit_push_changes" class="md-nav__link">
+    stage_commit_push_changes()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    Exceptions
+  </a>
+  
+    <nav class="md-nav" aria-label="Exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.exceptions.PyGitOpsError" class="md-nav__link">
+    PyGitOpsError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.exceptions.PyGitOpsValueError" class="md-nav__link">
+    PyGitOpsValueError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.exceptions.PyGitOpsStagedItemsError" class="md-nav__link">
+    PyGitOpsStagedItemsError
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    Functions
+  </a>
+  
+    <nav class="md-nav" aria-label="Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.remote_git_utils.build_github_repo_url" class="md-nav__link">
+    build_github_repo_url()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.operations.get_updated_repo" class="md-nav__link">
+    get_updated_repo()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.operations.get_default_branch" class="md-nav__link">
+    get_default_branch()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.operations.feature_branch" class="md-nav__link">
+    feature_branch()
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.operations.stage_commit_push_changes" class="md-nav__link">
+    stage_commit_push_changes()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exceptions" class="md-nav__link">
+    Exceptions
+  </a>
+  
+    <nav class="md-nav" aria-label="Exceptions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.exceptions.PyGitOpsError" class="md-nav__link">
+    PyGitOpsError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.exceptions.PyGitOpsValueError" class="md-nav__link">
+    PyGitOpsValueError
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pygitops.exceptions.PyGitOpsStagedItemsError" class="md-nav__link">
+    PyGitOpsStagedItemsError
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                  <a href="https://github.com/wayfair-incubator/pygitops/edit/main/docs/api.md" title="Edit this page" class="md-content__button md-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+                  </a>
+                
+                
+                <h1 id="reference">Reference</h1>
+<h2 id="functions">Functions</h2>
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="pygitops.remote_git_utils.build_github_repo_url" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">build_github_repo_url</span><span class="p">(</span><span class="n">service_account_name</span><span class="p">,</span> <span class="n">service_account_token</span><span class="p">,</span> <span class="n">repo_namespace</span><span class="p">,</span> <span class="n">repo_name</span><span class="p">,</span> <span class="n">domain_name</span><span class="o">=</span><span class="s1">&#39;github.com&#39;</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Build github repo_url with the intention of providing as the <code>repo_url</code> argument to <code>get_updated_repo</code>.
+This factory function is specific to github, and might not support url schemas of different git services.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>service_account_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Name of the Github service account used to clone repository.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>service_account_token</code></td>
+        <td><code>str</code></td>
+        <td><p>Raw token associated with the provided Github service account name.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>repo_namespace</code></td>
+        <td><code>str</code></td>
+        <td><p>The namespace of the target repository.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>repo_name</code></td>
+        <td><code>str</code></td>
+        <td><p>The name of the target repository.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>domain_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Github domain, allows us to point to instances other than public Github.</p></td>
+        <td><code>&#39;github.com&#39;</code></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="pygitops.operations.get_updated_repo" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_updated_repo</span><span class="p">(</span><span class="n">repo_url</span><span class="p">,</span> <span class="n">clone_dir</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Clone the default branch of the target repository, returning a repo object.</p>
+<p>If repo is already present, we will pull in the latest changes to the default branch of the repo.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>repo_url</code></td>
+        <td><code>str</code></td>
+        <td><p>URL of the Github repository to be cloned.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>clone_dir</code></td>
+        <td><code>Union[pathlib.Path, str]</code></td>
+        <td><p>The empty directory to clone repository content to.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>PyGitOpsError</code></td>
+        <td><p>There was an error cloning the repository.</p></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="pygitops.operations.get_default_branch" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">get_default_branch</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Get the default branch of the provided repository.</p>
+<p>Although Git itself does not have a concept of default branches, a default branch on a GitHub repository maps directly to the HEAD symbolic ref.
+Pull in remote branches and update local head refs pointing to the remote repository.
+We expect the HEAD ref to match a particular pattern that we regex against.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>repo</code></td>
+        <td><code>Repo</code></td>
+        <td><p>git.Repo instance.</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Returns:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>str</code></td>
+      <td><p>string representing name of default branch.</p></td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="pygitops.operations.feature_branch" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">feature_branch</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Checkout the desired feature branch.</p>
+<p>Return to the default branch when context is exited.</p>
+<p>The main responsibility of this context manager is to limit concurrent
+operations on the local filesystem via the FileLock.</p>
+<p>Local git commit operations in particular should leverage this behavior.</p>
+<p><strong><em> Assumes default branch is checked out, otherwise raises PyGitOpsError </em></strong></p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>repo</code></td>
+        <td><code>Repo</code></td>
+        <td><p>Repository object</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>branch_name</code></td>
+        <td><code>str</code></td>
+        <td><p>str object indicating the branch we would like to checkout</p></td>
+        <td><em>required</em></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>PyGitOpsError</code></td>
+        <td><p>There was an error performing the feature branch operation.</p></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-function">
+
+
+
+<h3 id="pygitops.operations.stage_commit_push_changes" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">stage_commit_push_changes</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">branch_name</span><span class="p">,</span> <span class="n">actor</span><span class="p">,</span> <span class="n">commit_message</span><span class="p">,</span> <span class="n">items_to_stage</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Handles the logic of persisting filesystem changes to a local repository via a commit to a feature branch.</p>
+<p>This includes staging, committing, and pushing the local changes.</p>
+
+<p><strong>Parameters:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Description</th>
+      <th>Default</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>repo</code></td>
+        <td><code>Repo</code></td>
+        <td><p>Repository object.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>branch_name</code></td>
+        <td><code>str</code></td>
+        <td><p>Feature branch from which changes will be committed and pushed.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>actor</code></td>
+        <td><code>Actor</code></td>
+        <td><p>The Github actor with which to perform the commit operation.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>commit_message</code></td>
+        <td><code>str</code></td>
+        <td><p>Text to be used as the commit message.</p></td>
+        <td><em>required</em></td>
+      </tr>
+      <tr>
+        <td><code>items_to_stage</code></td>
+        <td><code>Optional[List[pathlib.Path]]</code></td>
+        <td><p>List of files and directories that will be staged for commit, if None will include all changes.</p></td>
+        <td><code>None</code></td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Exceptions:</strong></p>
+<table>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+        <td><code>PyGitOpsStagedItemsError</code></td>
+        <td><p>There were no items to stage.</p></td>
+      </tr>
+      <tr>
+        <td><code>PyGitOpsError</code></td>
+        <td><p>There was an error staging, committing, or pushing code.</p></td>
+      </tr>
+  </tbody>
+</table>
+    </div>
+
+  </div>
+
+<h2 id="exceptions">Exceptions</h2>
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="pygitops.exceptions.PyGitOpsError" class="doc doc-heading">
+        <code>PyGitOpsError</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>Parent exception class for all errors coming from <code>pygitops</code> package.</p>
+
+
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="pygitops.exceptions.PyGitOpsValueError" class="doc doc-heading">
+        <code>PyGitOpsValueError</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>The provided argument is invalid.</p>
+
+
+
+    </div>
+
+  </div>
+
+
+
+  <div class="doc doc-object doc-class">
+
+
+
+<h3 id="pygitops.exceptions.PyGitOpsStagedItemsError" class="doc doc-heading">
+        <code>PyGitOpsStagedItemsError</code>
+
+
+
+</h3>
+
+    <div class="doc doc-contents first">
+
+      <p>There were no items to stage for commit.</p>
+
+
+
+    </div>
+
+  </div>
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        <a href="../development-guide/" class="md-footer__link md-footer__link--prev" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Development Guide
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        Made with
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs
+        </a>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing"}, "search": "../assets/javascripts/workers/search.4fa0e4ee.min.js", "version": {"provider": "mike"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1d3bfcf1.min.js"></script>
+      
+    
+  </body>
+</html>
