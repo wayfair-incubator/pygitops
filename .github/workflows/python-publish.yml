@@ -4,9 +4,6 @@
 name: Upload to PyPI
 
 on:
-  push:
-    tags:
-      - 'v*'
   release:
     types: [published]
 
