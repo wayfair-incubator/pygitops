@@ -1,4 +1,5 @@
 site_name: pygitops Documentation
+site_url: https://wayfair-incubator.github.io/pygitops/
 repo_url: https://github.com/wayfair-incubator/pygitops/
 repo_name: wayfair-incubator/pygitops
 edit_uri: edit/main/docs/
