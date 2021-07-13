@@ -1,7 +1,7 @@
 bandit==1.7.0
 black==21.6b0
 flake8==3.9.2
-isort==5.9.1
+isort==5.9.2
 mypy==0.812
 mkdocs-material==7.1.10
 mkdocstrings==0.15.2
