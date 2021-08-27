@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.11.2] - 2021-08-30
+
+### Changed
+
+* When we exit feature branch context manager, cleaned up the working directory.
+
 ## [0.11.1] - 2021-05-17
 
 ### Fixed

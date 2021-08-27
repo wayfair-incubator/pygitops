@@ -146,6 +146,9 @@ def feature_branch(repo: Repo, branch_name: str) -> Iterator[None]:
         try:
             yield
         finally:
+            # clean up the feature branch
+            repo.git.clean('-xdf')
+            repo.git.reset('--hard')
             # move back to the repo's default branch when the `feature_branch` context is exited
             repo.heads[default_branch].checkout()
             _logger.debug(
