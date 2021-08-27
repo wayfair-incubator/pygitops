@@ -78,16 +78,16 @@ def test_feature_branch_context_manager__add_new_file_in_different_branches__cle
     tmp_path,
 ):
     local_repo = _get_local_remote_repos(tmp_path).local_repo
-    branch_name_1 = str(uuid.uuid4())
-    with feature_branch(local_repo, branch_name_1):
+    some_branch_name = str(uuid.uuid4())
+    with feature_branch(local_repo, some_branch_name):
         _some_source_modifier(local_repo, SOME_FILENAME)
-        diff_1 = _get_diff(local_repo)
-        assert diff_1 == SOME_CHANGE_DIFF
-    branch_name_2 = str(uuid.uuid4())
-    with feature_branch(local_repo, branch_name_2):
+        some_diff = _get_diff(local_repo)
+        assert some_diff == SOME_CHANGE_DIFF
+    some_other_branch_name = str(uuid.uuid4())
+    with feature_branch(local_repo, some_other_branch_name):
         _some_source_modifier(local_repo, SOME_OTHER_FILENAME)
-        diff_2 = _get_diff(local_repo)
-        assert diff_2 == SOME_OTHER_CHANGE_DIFF
+        some_other_diff = _get_diff(local_repo)
+        assert some_other_diff == SOME_OTHER_CHANGE_DIFF
 
 
 def test_stage_commit_push_changes__add_new_file__change_persisted(tmp_path):
