@@ -1,5 +1,4 @@
 import re
-import uuid
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path, PosixPath
@@ -39,6 +38,8 @@ SOME_CHANGE_DIFF = "diff --git a/some-filename.txt b/some-filename.txt\nnew file
 SOME_OTHER_CHANGE_DIFF = "diff --git a/some-other-filename.txt b/some-other-filename.txt\nnew file mode 100644\nindex 0000000..74cd6e7\n--- /dev/null\n+++ b/some-other-filename.txt\n@@ -0,0 +1 @@\n+some-content\n\\ No newline at end of file"
 SOME_FILENAME = "some-filename.txt"
 SOME_OTHER_FILENAME = "some-other-filename.txt"
+SOME_BRANCH_NAME = "some-branch-name"
+SOME_OTHER_BRANCH_NAME = "some-other-branch-name"
 
 
 @dataclass
@@ -78,12 +79,12 @@ def test_feature_branch_context_manager__add_new_file_in_different_branches__cle
     tmp_path,
 ):
     local_repo = _get_local_remote_repos(tmp_path).local_repo
-    some_branch_name = str(uuid.uuid4())
+    some_branch_name = SOME_BRANCH_NAME
     with feature_branch(local_repo, some_branch_name):
         _some_source_modifier(local_repo, SOME_FILENAME)
         some_diff = _get_diff(local_repo)
         assert some_diff == SOME_CHANGE_DIFF
-    some_other_branch_name = str(uuid.uuid4())
+    some_other_branch_name = SOME_OTHER_BRANCH_NAME
     with feature_branch(local_repo, some_other_branch_name):
         _some_source_modifier(local_repo, SOME_OTHER_FILENAME)
         some_other_diff = _get_diff(local_repo)
