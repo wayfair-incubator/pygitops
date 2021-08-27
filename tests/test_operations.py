@@ -1,4 +1,5 @@
 import re
+import uuid
 from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path, PosixPath
@@ -15,6 +16,7 @@ from pygitops.operations import (
     get_updated_repo,
     stage_commit_push_changes,
 )
+from tests.util import _get_diff, _get_local_remote_repos, _some_source_modifier
 
 SOME_ACTOR = Actor("some-user", "some-user@company.com")
 SOME_COMMIT_MESSAGE = "some-commit-message"
@@ -33,6 +35,10 @@ SOME_CLONE_REPO_URL = f"https://{SOME_SERVICE_ACCOUNT_NAME}:{SOME_SERVICE_ACCOUN
 SOME_CLONE_PATH = Path("foo")
 SOME_LOCAL_REPO_NAME = "local"
 SOME_HEAD_REF = f"refs/remotes/origin/{GIT_BRANCH_MASTER}"
+SOME_CHANGE_DIFF = "diff --git a/some-filename.txt b/some-filename.txt\nnew file mode 100644\nindex 0000000..74cd6e7\n--- /dev/null\n+++ b/some-filename.txt\n@@ -0,0 +1 @@\n+some-content\n\\ No newline at end of file"
+SOME_OTHER_CHANGE_DIFF = "diff --git a/some-other-filename.txt b/some-other-filename.txt\nnew file mode 100644\nindex 0000000..74cd6e7\n--- /dev/null\n+++ b/some-other-filename.txt\n@@ -0,0 +1 @@\n+some-content\n\\ No newline at end of file"
+SOME_FILENAME = "some-filename.txt"
+SOME_OTHER_FILENAME = "some-other-filename.txt"
 
 
 @dataclass
@@ -66,6 +72,22 @@ def test_stage_commit_push_changes__push_failure__raises_pygitops_error(
             stage_commit_push_changes(
                 cloned_repo, SOME_FEATURE_BRANCH, SOME_ACTOR, SOME_COMMIT_MESSAGE
             )
+
+
+def test_feature_branch_context_manager__add_new_file_in_different_branches__clean_up_successfully(
+    tmp_path,
+):
+    local_repo = _get_local_remote_repos(tmp_path).local_repo
+    branch_name_1 = str(uuid.uuid4())
+    with feature_branch(local_repo, branch_name_1):
+        _some_source_modifier(local_repo, SOME_FILENAME)
+        diff_1 = _get_diff(local_repo)
+        assert diff_1 == SOME_CHANGE_DIFF
+    branch_name_2 = str(uuid.uuid4())
+    with feature_branch(local_repo, branch_name_2):
+        _some_source_modifier(local_repo, SOME_OTHER_FILENAME)
+        diff_2 = _get_diff(local_repo)
+        assert diff_2 == SOME_OTHER_CHANGE_DIFF
 
 
 def test_stage_commit_push_changes__add_new_file__change_persisted(tmp_path):
