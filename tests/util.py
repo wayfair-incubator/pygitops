@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional
 
 from git import Actor, Repo
 
 SOME_COMMIT_MESSAGE = "some-commit-message"
-SOME_ACTOR = SOME_ACTOR = Actor("some-user", "some-user@wayfair.com")
+SOME_ACTOR = Actor("some-user", "some-user@wayfair.com")
 SOME_CONTENT = "some-content"
 
 
@@ -15,9 +14,7 @@ class Repos:
     remote_repo: Repo
 
 
-def _get_local_remote_repos(
-    base_path: Path, branch_name: Optional[str] = None
-) -> Repos:
+def _get_local_remote_repos(base_path: Path) -> Repos:
     remote_repo_path = base_path / "some-remote-repo"
     local_repo_path = base_path / "some-local-repo"
     remote_repo = Repo.init(remote_repo_path)
@@ -31,9 +28,6 @@ def _get_local_remote_repos(
     )
 
     local_repo = Repo.clone_from(remote_repo.working_dir, local_repo_path)
-    if branch_name is not None:
-        feature_branch = local_repo.create_head(branch_name)
-        feature_branch.checkout()
     return Repos(local_repo=local_repo, remote_repo=remote_repo)
 
 
@@ -53,8 +47,8 @@ def _get_diff(repo: Repo) -> str:
 
 def _some_source_modifier(repo: Repo, filename: str) -> None:
     # Add new file
-    test_third_file_path = Path(repo.working_dir) / filename
-    test_third_file_path.touch()
+    test_file_path = Path(repo.working_dir) / filename
+    test_file_path.touch()
     # Modify file
     test_file_path = Path(repo.working_dir) / filename
     test_file_path.write_text(SOME_CONTENT)
