@@ -1,4 +1,4 @@
-# pygitops - 0.11.2
+# pygitops - 0.12.0
 
 [![CI pipeline status](https://github.com/wayfair-incubator/pygitops/workflows/CI/badge.svg?branch=main)][ci]
 
