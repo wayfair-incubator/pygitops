@@ -15,11 +15,11 @@ from pygitops.operations import (
     get_updated_repo,
     stage_commit_push_changes,
 )
-from tests.util import _get_diff, _get_local_remote_repos, _some_source_modifier
 
 SOME_ACTOR = Actor("some-user", "some-user@company.com")
 SOME_COMMIT_MESSAGE = "some-commit-message"
 SOME_CONTENT_FILENAME = "foo.txt"
+SOME_CHANGES = "some changes"
 SOME_INITIAL_CONTENT = "foobar"
 SOME_NEW_CONTENT = "newbar"
 SOME_FEATURE_BRANCH = "test_branch"
@@ -34,12 +34,14 @@ SOME_CLONE_REPO_URL = f"https://{SOME_SERVICE_ACCOUNT_NAME}:{SOME_SERVICE_ACCOUN
 SOME_CLONE_PATH = Path("foo")
 SOME_LOCAL_REPO_NAME = "local"
 SOME_HEAD_REF = f"refs/remotes/origin/{GIT_BRANCH_MASTER}"
-SOME_CHANGE_DIFF = "diff --git a/some-filename.txt b/some-filename.txt\nnew file mode 100644\nindex 0000000..74cd6e7\n--- /dev/null\n+++ b/some-filename.txt\n@@ -0,0 +1 @@\n+some-content\n\\ No newline at end of file"
-SOME_OTHER_CHANGE_DIFF = "diff --git a/some-other-filename.txt b/some-other-filename.txt\nnew file mode 100644\nindex 0000000..74cd6e7\n--- /dev/null\n+++ b/some-other-filename.txt\n@@ -0,0 +1 @@\n+some-content\n\\ No newline at end of file"
-SOME_FILENAME = "some-filename.txt"
-SOME_OTHER_FILENAME = "some-other-filename.txt"
+
+SOME_OTHER_FILENAME = "SOME_OTHER_FILENAME.txt"
 SOME_BRANCH_NAME = "some-branch-name"
 SOME_OTHER_BRANCH_NAME = "some-other-branch-name"
+SOME_CONTENT = "some-content"
+SOME_MODIFY_FILE_DIFF = "diff --git a/foo.txt b/foo.txt\nindex 5f0c613..74cd6e7 100644\n--- a/foo.txt\n+++ b/foo.txt\n@@ -1 +1 @@\n-some changes\n\\ No newline at end of file\n+some-content\n\\ No newline at end of file"
+SOME_DELETE_FILE_DIFF = "diff --git a/foo.txt b/foo.txt\ndeleted file mode 100644\nindex 5f0c613..0000000\n--- a/foo.txt\n+++ /dev/null\n@@ -1 +0,0 @@\n-some changes\n\\ No newline at end of file"
+SOME_NEW_FILE_DIFF = "diff --git a/SOME_OTHER_FILENAME.txt b/SOME_OTHER_FILENAME.txt\nnew file mode 100644\nindex 0000000..e69de29"
 
 
 @dataclass
@@ -75,20 +77,101 @@ def test_stage_commit_push_changes__push_failure__raises_pygitops_error(
             )
 
 
+def _delete_existing_file(local_repo: Repo, filename: str) -> None:
+    test_second_file_path = Path(local_repo.working_dir) / filename
+    test_second_file_path.unlink()
+
+
+def _modify_existing_file(local_repo: Repo, filename: str, content: str) -> None:
+    test_file_path = Path(local_repo.working_dir) / filename
+    test_file_path.write_text(content)
+
+
+def _add_new_file(local_repo: Repo, filename: str) -> None:
+    test_third_file_path = Path(local_repo.working_dir) / filename
+    test_third_file_path.touch()
+
+
+@pytest.mark.parametrize(
+    (
+        "some_source_modifier",
+        "some_source_modifier_inputs",
+        "some_other_source_modifier",
+        "some_other_source_modifier_inputs",
+        "some_result",
+        "some_other_result",
+    ),
+    [
+        (
+            _modify_existing_file,
+            [SOME_CONTENT_FILENAME, SOME_CONTENT],
+            _modify_existing_file,
+            [SOME_CONTENT_FILENAME, SOME_CONTENT],
+            SOME_MODIFY_FILE_DIFF,
+            SOME_MODIFY_FILE_DIFF,
+        ),
+        (
+            _delete_existing_file,
+            [SOME_CONTENT_FILENAME],
+            _delete_existing_file,
+            [SOME_CONTENT_FILENAME],
+            SOME_DELETE_FILE_DIFF,
+            SOME_DELETE_FILE_DIFF,
+        ),
+        (
+            _add_new_file,
+            [SOME_OTHER_FILENAME],
+            _add_new_file,
+            [SOME_OTHER_FILENAME],
+            SOME_NEW_FILE_DIFF,
+            SOME_NEW_FILE_DIFF,
+        ),
+        (
+            _modify_existing_file,
+            [SOME_CONTENT_FILENAME, SOME_CONTENT],
+            _add_new_file,
+            [SOME_OTHER_FILENAME],
+            SOME_MODIFY_FILE_DIFF,
+            SOME_NEW_FILE_DIFF,
+        ),
+        (
+            _delete_existing_file,
+            [SOME_CONTENT_FILENAME],
+            _modify_existing_file,
+            [SOME_CONTENT_FILENAME, SOME_CONTENT],
+            SOME_DELETE_FILE_DIFF,
+            SOME_MODIFY_FILE_DIFF,
+        ),
+        (
+            _add_new_file,
+            [SOME_OTHER_FILENAME],
+            _delete_existing_file,
+            [SOME_CONTENT_FILENAME],
+            SOME_NEW_FILE_DIFF,
+            SOME_DELETE_FILE_DIFF,
+        ),
+    ],
+)
 def test_feature_branch_context_manager__add_new_file_in_different_branches__clean_up_successfully(
     tmp_path,
+    some_source_modifier,
+    some_source_modifier_inputs,
+    some_other_source_modifier,
+    some_other_source_modifier_inputs,
+    some_result,
+    some_other_result,
 ):
-    local_repo = _get_local_remote_repos(tmp_path).local_repo
+    local_repo = _initialize_multiple_empty_repos(tmp_path).local_repo
     some_branch_name = SOME_BRANCH_NAME
     with feature_branch(local_repo, some_branch_name):
-        _some_source_modifier(local_repo, SOME_FILENAME)
+        some_source_modifier(local_repo, *some_source_modifier_inputs)
         some_diff = _get_diff(local_repo)
-        assert some_diff == SOME_CHANGE_DIFF
+        assert some_diff == some_result
     some_other_branch_name = SOME_OTHER_BRANCH_NAME
     with feature_branch(local_repo, some_other_branch_name):
-        _some_source_modifier(local_repo, SOME_OTHER_FILENAME)
+        some_other_source_modifier(local_repo, *some_other_source_modifier_inputs)
         some_other_diff = _get_diff(local_repo)
-        assert some_other_diff == SOME_OTHER_CHANGE_DIFF
+        assert some_other_diff == some_other_result
 
 
 def test_stage_commit_push_changes__add_new_file__change_persisted(tmp_path):
@@ -738,8 +821,8 @@ def _initialize_multiple_empty_repos(base_path) -> MultipleTestingRepos:
     remote_repo = Repo.init(remote_path)
 
     # give the remote repo some initial commit history
-    new_file_path = remote_path / "foo.txt"
-    new_file_path.write_text("some changes")
+    new_file_path = remote_path / SOME_CONTENT_FILENAME
+    new_file_path.write_text(SOME_CHANGES)
     remote_repo.index.add([str(new_file_path)])
     remote_repo.index.commit(
         SOME_COMMIT_MESSAGE, author=SOME_ACTOR, committer=SOME_ACTOR
@@ -753,3 +836,24 @@ def _initialize_multiple_empty_repos(base_path) -> MultipleTestingRepos:
     return MultipleTestingRepos(
         remote_repo=remote_repo, local_repo=local_repo, cloned_repo=cloned_repo
     )
+
+
+def _get_diff(repo: Repo) -> str:
+    """
+    Helper function used to handle the logic of generating diff text via a feature branch.
+
+    This diff will only reflect the changes since the last commit.
+    This includes staging the local changes.
+    """
+
+    index = repo.index
+    workdir_path = Path(repo.working_dir)
+
+    untracked_file_paths = [Path(f) for f in repo.untracked_files]
+    items_to_stage = untracked_file_paths + [Path(f.a_path) for f in index.diff(None)]
+
+    for item in items_to_stage:
+        full_path = workdir_path / item
+        index.add(str(item)) if full_path.exists() else index.remove(str(item), r=True)
+
+    return repo.git.diff("--cached")

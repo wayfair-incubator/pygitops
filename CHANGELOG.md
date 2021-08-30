@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-* When we exit feature branch context manager, cleaned up the working directory.
+* Cleaned up the working directory on feature branch when we exit feature branch context manager.
 
 ## [0.11.1] - 2021-05-17
 
