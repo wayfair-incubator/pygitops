@@ -88,8 +88,8 @@ def _modify_existing_file(local_repo: Repo, filename: str, content: str) -> None
 
 
 def _add_new_file(local_repo: Repo, filename: str) -> None:
-    test_third_file_path = Path(local_repo.working_dir) / filename
-    test_third_file_path.touch()
+    test_other_file_path = Path(local_repo.working_dir) / filename
+    test_other_file_path.touch()
 
 
 @pytest.mark.parametrize(
