@@ -35,23 +35,25 @@ def stage_commit_push_changes(
     :param branch_name: Feature branch from which changes will be committed and pushed.
     :param actor: The Github actor with which to perform the commit operation.
     :param commit_message: Text to be used as the commit message.
-    :param items_to_stage: List of files and directories that will be staged for commit, if None will include all changes.
-    :raises PyGitOpsStagedItemsError: There were no items to stage.
+    :param items_to_stage: List of files and directories that will be staged for commit, will be inferred if parameter not provided.
+        Please use an empty list to signal that there are intentionally no items to stage, and items_to_stage should not be inferred.
+    :raises PyGitOpsStagedItemsError: Items to stage are not present or could not be determined.
     :raises PyGitOpsError: There was an error staging, committing, or pushing code.
     """
     index = repo.index
     workdir_path = Path(repo.working_dir)
 
+    # We will determine items_to_stage if the parameter was not provided.
     if items_to_stage is None:
         untracked_file_paths = [Path(f) for f in repo.untracked_files]
         items_to_stage = untracked_file_paths + [
             Path(f.a_path) for f in index.diff(None)
         ]
 
-    if not items_to_stage:
-        raise PyGitOpsStagedItemsError(
-            "There are no items to stage, cannot perform commit operation"
-        )
+        if not items_to_stage:
+            raise PyGitOpsStagedItemsError(
+                "There are no items to stage, cannot perform commit operation"
+            )
 
     # stage and commit changes using the provided actor.
     for item in items_to_stage:
