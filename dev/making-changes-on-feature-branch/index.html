@@ -250,6 +250,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#advanced-example" class="md-nav__link">
+    Advanced Example
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -353,6 +360,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#advanced-example" class="md-nav__link">
+    Advanced Example
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -384,18 +398,19 @@ and the <code>stage_commit_push_changes</code> function.</p>
 <span class="n">NEW_BRANCH_NAME</span> <span class="o">=</span> <span class="s1">&#39;adding-chores&#39;</span>
 <span class="n">ACTOR</span> <span class="o">=</span> <span class="n">Actor</span><span class="p">(</span><span class="s1">&#39;git-username&#39;</span><span class="p">,</span> <span class="s1">&#39;git-email@example.com&#39;</span><span class="p">)</span>
 <span class="n">COMMIT_MESSAGE</span> <span class="o">=</span> <span class="s1">&#39;Adding chores&#39;</span>
+<span class="n">SOME_DIRECTORY</span> <span class="o">=</span> <span class="s1">&#39;some-directory&#39;</span>
 
 <span class="c1"># create a Repo object in the current directory (see https://gitpython.readthedocs.io/en/stable/tutorial.html#meet-the-repo-type)</span>
-<span class="n">REPO</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rorepo</span><span class="o">.</span><span class="n">working_tree_dir</span><span class="p">)</span>
+<span class="n">repo</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">SOME_DIRECTORY</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">feature_branch</span><span class="p">(</span><span class="n">REPO</span><span class="p">,</span> <span class="n">NEW_BRANCH_NAME</span><span class="p">):</span>
     <span class="c1"># create a new file with a list of chores</span>
-    <span class="n">Path</span><span class="p">(</span><span class="n">NEW_FILE_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s1">&#39;- [ ] haircut</span><span class="se">\n</span><span class="s1">- [ ] groceries</span><span class="se">\n</span><span class="s1">- [ ] dishes&#39;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">SOME_DIRECTORY</span><span class="p">)</span> <span class="o">/</span> <span class="n">NEW_FILE_NAME</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s1">&#39;- [ ] haircut</span><span class="se">\n</span><span class="s1">- [ ] groceries</span><span class="se">\n</span><span class="s1">- [ ] dishes&#39;</span><span class="p">)</span>
 
     <span class="c1"># stage, commit, and push these changes</span>
-    <span class="n">stage_commit_push_changes</span><span class="p">(</span><span class="n">REPO</span><span class="p">,</span> <span class="n">NEW_BRANCH_NAME</span><span class="p">,</span> <span class="n">ACTOR</span><span class="p">,</span> <span class="n">COMMIT_MESSAGE</span><span class="p">)</span>
+    <span class="n">stage_commit_push_changes</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">NEW_BRANCH_NAME</span><span class="p">,</span> <span class="n">ACTOR</span><span class="p">,</span> <span class="n">COMMIT_MESSAGE</span><span class="p">)</span>
 </code></pre></div>
-<p>Focusing on the portion of the code starting at the line with <code>with feature_branch(REPO, NEW_BRANCH_NAME):</code>,
+<p>Focusing on the portion of the code starting at the line with <code>with feature_branch(repo, NEW_BRANCH_NAME):</code>,
 we can generalize the workflow as:</p>
 <ul>
 <li>Create a new, feature branch</li>
@@ -404,6 +419,44 @@ we can generalize the workflow as:</p>
 <li>Return to the default branch</li>
 </ul>
 <p>This is a common pattern when automating git workflows; using <code>feature_branch</code> and <code>stage_commit_push_changes</code> makes it easy to capture this flow in Python.</p>
+<h2 id="advanced-example">Advanced Example</h2>
+<p>In the below example, we have a repository that contains <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">git submodules</a>.</p>
+<p>The submodule references a git repository rather than containing its code.</p>
+<p>In some cases, you may want to automate updates to this reference.</p>
+<p>The below example demonstrates several key concepts:</p>
+<ul>
+<li>Using <code>repo.git</code>, we are able to directly execute git commands such as <code>submodule update --remote</code> and <code>add SOME_SUBMODULE_REPO_NAME</code></li>
+<li>When we execute <code>stage_commit_push_changes</code>, we would like to commit to a feature branch, but no items are available to be staged.</li>
+<li>Here, we explicitly provide the <code>items_to_stage=[]</code> to indicate that we intentionally have no items to stage.</li>
+<li>Otherwise, the operation will infer staged items for us, and raise a <code>PyGitOpsError</code> when no staged items are discovered.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">pygitops.operations</span> <span class="kn">import</span> <span class="n">feature_branch</span><span class="p">,</span> <span class="n">stage_commit_push_changes</span>
+<span class="kn">from</span> <span class="nn">git</span> <span class="kn">import</span> <span class="n">Actor</span><span class="p">,</span> <span class="n">Repo</span>
+
+<span class="n">NEW_BRANCH_NAME</span> <span class="o">=</span> <span class="s1">&#39;some-new-branch&#39;</span>
+<span class="n">ACTOR</span> <span class="o">=</span> <span class="n">Actor</span><span class="p">(</span><span class="s1">&#39;git-username&#39;</span><span class="p">,</span> <span class="s1">&#39;git-email@example.com&#39;</span><span class="p">)</span>
+<span class="n">REPO</span> <span class="o">=</span> <span class="n">Repo</span><span class="p">(</span><span class="n">SOME_DIRECTORY</span><span class="p">)</span>
+<span class="n">COMMIT_MESSAGE</span> <span class="o">=</span> <span class="s1">&#39;automated submodule update</span>
+<span class="n">SOME_SUBMODULE_REPO_NAME</span> <span class="o">=</span> <span class="s1">&#39;some-repo&#39;</span>
+
+<span class="c1"># update submodule&#39;s reference to remote upstream, push feature branch with changes</span>
+<span class="k">with</span> <span class="n">feature_branch</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">NEW_BRANCH_NAME</span><span class="p">):</span>
+
+    <span class="c1"># update the submodules&#39;s reference to the remote repo</span>
+    <span class="n">repo</span><span class="o">.</span><span class="n">git</span><span class="o">.</span><span class="n">submodule</span><span class="p">(</span><span class="s2">&quot;update&quot;</span><span class="p">,</span> <span class="s2">&quot;--remote&quot;</span><span class="p">)</span>
+
+    <span class="c1"># stage changes ourselves so that we can use the porcelain `git add &lt;file&gt;` command</span>
+    <span class="c1"># tell `stage_commit_push_changes()` to not stage anything itself via `items_to_stage=[]`</span>
+    <span class="n">repo</span><span class="o">.</span><span class="n">git</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">SOME_SUBMODULE_REPO_NAME</span><span class="p">)</span>
+
+    <span class="n">stage_commit_push_changes</span><span class="p">(</span>
+        <span class="n">repo</span><span class="p">,</span>
+        <span class="n">NEW_BRANCH_NAME</span><span class="p">,</span>
+        <span class="n">ACTOR</span><span class="p">,</span>
+        <span class="n">COMMIT_MESSAGE</span><span class="p">,</span>
+        <span class="n">items_to_stage</span><span class="o">=</span><span class="p">[],</span>
+    <span class="p">)</span>
+</code></pre></div>
                 
               
               

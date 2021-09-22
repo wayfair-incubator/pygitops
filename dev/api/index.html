@@ -822,7 +822,7 @@ operations on the local filesystem via the FileLock.</p>
       <tr>
         <td><code>items_to_stage</code></td>
         <td><code>Optional[List[pathlib.Path]]</code></td>
-        <td><p>List of files and directories that will be staged for commit, if None will include all changes.</p></td>
+        <td><p>List of files and directories that will be staged for commit, will be inferred if parameter not provided. Please use an empty list to signal that there are intentionally no items to stage, and items_to_stage should not be inferred.</p></td>
         <td><code>None</code></td>
       </tr>
   </tbody>
@@ -838,7 +838,7 @@ operations on the local filesystem via the FileLock.</p>
   <tbody>
       <tr>
         <td><code>PyGitOpsStagedItemsError</code></td>
-        <td><p>There were no items to stage.</p></td>
+        <td><p>Items to stage are not present or could not be determined.</p></td>
       </tr>
       <tr>
         <td><code>PyGitOpsError</code></td>
