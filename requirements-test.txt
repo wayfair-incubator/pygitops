@@ -5,7 +5,7 @@ isort==5.9.3
 mypy==0.812
 mkdocs-material==7.2.5
 mkdocstrings==0.15.2
-pytest==6.2.4
+pytest==6.2.5
 pytest-cov==2.12.1
 pytest-mock==3.6.1
 pdbpp
