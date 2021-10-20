@@ -86,13 +86,69 @@ grab the version from `__init__.py` without actually importing any dependencies.
 * **requirements.txt** - Lists all direct dependencies (packages imported by the library).
 * **Requirements-test.txt** - Lists all direct requirements needed to run the test suite & lints.
 
-## Publishing the Package
+## Publishing a New Version
 
-TODO: Document package publish process
+Once the package is ready to be released, there are a few things that need to be done:
+
+1. Start with a local clone of the repo on the default branch with a clean working tree.
+2. Run the version bump script with the appropriate part name (`major`, `minor`, or `patch`).
+    Example: `docker-compose run --rm bump minor`
+    
+    This wil create a new branch, updates all affected files with the new version, and commit the changes to the branch.
+
+3. Push the new branch to create a new pull request.
+4. Get the pull request approved.
+5. Merge the pull request to the default branch.
+
+Merging the pull request will trigger a GitHub Action that will create a new release. The creation of this new
+release will trigger a GitHub Action that will to build a wheel & a source distributions of the package and push them to
+[PyPI][pypi].
+
+!!! warning
+    The action that uploads the files to PyPI will not run until a repository maintainer acknowledges that the job is
+    ready to run. This is to keep the PyPI publishing token secure. Otherwise, any job would have access to the token. 
+
+In addition to uploading the files to PyPI, the documentation website will be updated to include the new version. If the
+new version is a full release, it will be made the new `latest` version.
 
 ## Continuous Integration Pipeline
 
-TODO: Add CI documentation.
+The Continuous Integration (CI) Pipeline runs to confirm that the repository is in a good state. It will run when 
+someone creates a pull request or when they push new commits to the branch for an existing pull request. The pipeline
+runs multiple different jobs that helps verify the state of the code.
+
+This same pipeline also runs on the default branch when a maintainer merges a pull request.
+
+### Lints
+
+The first set of jobs that run as part of the CI pipline are linters that perform static analysis on the code. This
+includes: [MyPy][mypy-docs], [Black][black-docs], [Isort][isort-docs], [Flake8][flake8-docs], and [Bandit][bandit-docs].
+
+### Tests
+
+The next set of jobs run the unit tests using [PyTest][pytest-docs]. The pipeline runs the tests cases across each
+supported version of Python to ensure compatibility.
+
+For each run of the test cases, the job will record the test results and code coverage information. The pipeline uploads
+the code coverage information to [CodeCov][codecov] to ensure that a pull request doesn't significantly reduce the total
+code coverage percentage or introduce a large amount of code that is untested.
+
+### Distribution Verification
+
+The next set of jobs build the wheel distribution, installs in into a virtual environment, and then runs Python to
+import the library version. This works as a smoke test to ensure that the library can be packaged correctly and used.
+The pipeline runs the tests cases across each supported version of Python to ensure compatibility.
+
+### Documentation
+
+The remaining jobs are all related to documentation.
+
+* A job runs each of the code examples that are used in the documentation to verify they produce the expected results.
+* A job builds the documentation in strict mode so that it will fail if there are any errors. The job records the
+    generated files so that the documentation website can be viewed in its rendered form.
+* When the pipeline is running as a result of a maintainer merging a pull request to the default branch, a job runs that
+    publishes the current state of the documentation to as the `dev` version. This will allow users to view the state of
+    the documentation as it has changed since a maintainer published the `latest` version.
 
 [usage-guide]: usage-guide/fundamentals.md
 [code of conduct]: https://github.com/wayfair-incubator/pygitops/blob/main/CODE_OF_CONDUCT.md
@@ -108,3 +164,5 @@ TODO: Add CI documentation.
 [isort-docs]: https://pycqa.github.io/isort/
 [flake8-docs]: http://flake8.pycqa.org/en/stable/
 [bandit-docs]: https://bandit.readthedocs.io/en/stable/
+[pypi]: https://pypi.org/project/pygitops/
+[codecov]: https://about.codecov.io/
