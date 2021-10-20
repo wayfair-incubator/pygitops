@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Referenced From: https://github.com/wayfair-incubator/columbo/blob/main/docker/bump_version.sh
+
 set -eo pipefail
 
 DEFAULT_BRANCH="main"
