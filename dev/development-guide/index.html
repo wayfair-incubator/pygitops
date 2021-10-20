@@ -338,8 +338,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#publishing-the-package" class="md-nav__link">
-    Publishing the Package
+  <a href="#publishing-a-new-version" class="md-nav__link">
+    Publishing a New Version
   </a>
   
 </li>
@@ -348,6 +348,40 @@
   <a href="#continuous-integration-pipeline" class="md-nav__link">
     Continuous Integration Pipeline
   </a>
+  
+    <nav class="md-nav" aria-label="Continuous Integration Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lints" class="md-nav__link">
+    Lints
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    Tests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distribution-verification" class="md-nav__link">
+    Distribution Verification
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -448,8 +482,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#publishing-the-package" class="md-nav__link">
-    Publishing the Package
+  <a href="#publishing-a-new-version" class="md-nav__link">
+    Publishing a New Version
   </a>
   
 </li>
@@ -458,6 +492,40 @@
   <a href="#continuous-integration-pipeline" class="md-nav__link">
     Continuous Integration Pipeline
   </a>
+  
+    <nav class="md-nav" aria-label="Continuous Integration Pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lints" class="md-nav__link">
+    Lints
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    Tests
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distribution-verification" class="md-nav__link">
+    Distribution Verification
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    Documentation
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -537,10 +605,59 @@ grab the version from <code>__init__.py</code> without actually importing any de
 <li><strong>requirements.txt</strong> - Lists all direct dependencies (packages imported by the library).</li>
 <li><strong>Requirements-test.txt</strong> - Lists all direct requirements needed to run the test suite &amp; lints.</li>
 </ul>
-<h2 id="publishing-the-package">Publishing the Package</h2>
-<p>TODO: Document package publish process</p>
+<h2 id="publishing-a-new-version">Publishing a New Version</h2>
+<p>Once the package is ready to be released, there are a few things that need to be done:</p>
+<ol>
+<li>Start with a local clone of the repo on the default branch with a clean working tree.</li>
+<li>
+<p>Run the version bump script with the appropriate part name (<code>major</code>, <code>minor</code>, or <code>patch</code>).
+    Example: <code>docker-compose run --rm bump minor</code></p>
+<p>This wil create a new branch, updates all affected files with the new version, and commit the changes to the branch.</p>
+</li>
+<li>
+<p>Push the new branch to create a new pull request.</p>
+</li>
+<li>Get the pull request approved.</li>
+<li>Merge the pull request to the default branch.</li>
+</ol>
+<p>Merging the pull request will trigger a GitHub Action that will create a new release. The creation of this new
+release will trigger a GitHub Action that will trigger a wheel build &amp; a source distributions of the package and push them to
+<a href="https://pypi.org/project/pygitops/">PyPI</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The action that uploads the files to PyPI will not run until a repository maintainer acknowledges that the job is
+ready to run. This is to keep the PyPI publishing token secure. Otherwise, any job would have access to the token. </p>
+</div>
+<p>In addition to uploading the files to PyPI, the documentation website will be updated to include the new version. If the
+new version is a full release, it will be made the new <code>latest</code> version.</p>
 <h2 id="continuous-integration-pipeline">Continuous Integration Pipeline</h2>
-<p>TODO: Add CI documentation.</p>
+<p>The Continuous Integration (CI) Pipeline runs to confirm that the repository is in a good state. It will run when 
+someone creates a pull request or when they push new commits to the branch for an existing pull request. The pipeline
+runs multiple different jobs that helps verify the state of the code.</p>
+<p>This same pipeline also runs on the default branch when a maintainer merges a pull request.</p>
+<h3 id="lints">Lints</h3>
+<p>The first set of jobs that run as part of the CI pipline are linters that perform static analysis on the code. This
+includes: <a href="https://mypy.readthedocs.io/en/stable/">MyPy</a>, <a href="https://black.readthedocs.io/en/stable/">Black</a>, <a href="https://pycqa.github.io/isort/">Isort</a>, <a href="http://flake8.pycqa.org/en/stable/">Flake8</a>, and <a href="https://bandit.readthedocs.io/en/stable/">Bandit</a>.</p>
+<h3 id="tests">Tests</h3>
+<p>The next set of jobs run the unit tests using <a href="https://docs.pytest.org/en/latest/">PyTest</a>. The pipeline runs the tests cases across each
+supported version of Python to ensure compatibility.</p>
+<p>For each run of the test cases, the job will record the test results and code coverage information. The pipeline uploads
+the code coverage information to <a href="https://about.codecov.io/">CodeCov</a> to ensure that a pull request doesn't significantly reduce the total
+code coverage percentage or introduce a large amount of code that is untested.</p>
+<h3 id="distribution-verification">Distribution Verification</h3>
+<p>The next set of jobs build the wheel distribution, installs in into a virtual environment, and then runs Python to
+import the library version. This works as a smoke test to ensure that the library can be packaged correctly and used.
+The pipeline runs the tests cases across each supported version of Python to ensure compatibility.</p>
+<h3 id="documentation">Documentation</h3>
+<p>The remaining jobs are all related to documentation.</p>
+<ul>
+<li>A job runs each of the code examples that are used in the documentation to verify they produce the expected results.</li>
+<li>A job builds the documentation in strict mode so that it will fail if there are any errors. The job records the
+    generated files so that the documentation website can be viewed in its rendered form.</li>
+<li>When the pipeline is running as a result of a maintainer merging a pull request to the default branch, a job runs that
+    publishes the current state of the documentation to as the <code>dev</code> version. This will allow users to view the state of
+    the documentation as it has changed since a maintainer published the <code>latest</code> version.</li>
+</ul>
                 
               
               
