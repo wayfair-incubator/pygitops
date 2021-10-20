@@ -101,7 +101,7 @@ Once the package is ready to be released, there are a few things that need to be
 5. Merge the pull request to the default branch.
 
 Merging the pull request will trigger a GitHub Action that will create a new release. The creation of this new
-release will trigger a GitHub Action that will to build a wheel & a source distributions of the package and push them to
+release will trigger a GitHub Action that will trigger a wheel build & a source distributions of the package and push them to
 [PyPI][pypi].
 
 !!! warning
