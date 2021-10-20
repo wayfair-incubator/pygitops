@@ -1,10 +1,4 @@
 version: '3.4'
-
-x-mount-app-and-user-git-config: &mount-app-and-user-git-config
-  volumes:
-    - ./:/app
-    - ~/.gitconfig:/home/gbq/.gitconfig # allow script to commit as user
-
 services:
 
   # a fully loaded development environment to test new code
@@ -34,8 +28,3 @@ services:
   mike:
     <<: *mkdocs
     entrypoint: "mike"
-
-  bump:
-    <<: *devbox
-    <<: *mount-app-and-user-git-config
-    entrypoint: docker/bump_version.sh
