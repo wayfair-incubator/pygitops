@@ -32,7 +32,7 @@ repo_url = build_github_repo_url(
     "github.com",
 )
 
-# Clone the repository to the local filesystem
+# Clone the repository to the local filesystem (updating the repo if it is already present)
 repo: Repo = get_updated_repo(
     repo_url, Path("some-clone-dir" / repo_name) 
 )
