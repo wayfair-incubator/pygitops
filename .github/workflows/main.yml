@@ -139,7 +139,6 @@ jobs:
   build-docs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
-    fail_ci_if_error: false
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -156,6 +155,7 @@ jobs:
 
       - name: Build Docs
         run: mkdocs build --strict
+        fail_ci_if_error: false
 
       - name: Upload docs as an artifact
         uses: actions/upload-artifact@v2
