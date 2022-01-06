@@ -138,7 +138,9 @@ jobs:
 
   build-docs:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+#    if: github.event_name == 'pull_request'
+    if: false
+    continue-on-error: true
     steps:
       - name: Check out code
         uses: actions/checkout@v2
