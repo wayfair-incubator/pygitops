@@ -59,9 +59,11 @@ def stage_commit_push_changes(
     for item in items_to_stage:
         full_path = workdir_path / item
         index.add(str(item)) if full_path.exists() else index.remove(str(item), r=True)
-    index.commit(commit_message, author=actor, committer=actor)
+    commit = index.commit(commit_message, author=actor, committer=actor)
 
-    _logger.debug(f"Successfully made commit to repository: {repo}")
+    _logger.debug(
+        f"Successfully made commit with stats: {commit.stats.files} to repository: {repo}"
+    )
 
     # push changes to the remote branch
     origin = repo.remotes.origin
