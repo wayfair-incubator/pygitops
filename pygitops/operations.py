@@ -70,7 +70,7 @@ def stage_commit_push_changes(
     push_info = origin.push(branch_name)[0]
 
     _logger.debug(
-        f"Commit pushed to remote branch: {branch_name}, push info: {push_info}"
+        f"Issued commit to remote branch: {branch_name}, with resulting summary: {push_info.summary} and flags: {push_info.flags}. (see flag documentation: https://gitpython.readthedocs.io/en/stable/reference.html#git.remote.PushInfo)"
     )
 
     if _push_error_present(push_info):
