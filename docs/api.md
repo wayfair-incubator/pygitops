@@ -1,6 +1,6 @@
 # Reference
 
-## Functions
+## Function
 
 ::: pygitops.remote_git_utils.build_github_repo_url
 
@@ -12,7 +12,7 @@
 
 ::: pygitops.operations.stage_commit_push_changes
 
-## Exceptions
+## Exception
 
 ::: pygitops.exceptions.PyGitOpsError
 
