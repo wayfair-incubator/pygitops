@@ -626,18 +626,21 @@ grab the version from <code>__init__.py</code> without actually importing any de
 <h2 id="publishing-a-new-version">Publishing a New Version</h2>
 <p>Once the package is ready to be released, there are a few things that need to be done:</p>
 <ol>
-<li>Start with a local clone of the repo on the default branch with a clean working tree.</li>
 <li>
 <p>Run the version bump script with the appropriate part name (<code>major</code>, <code>minor</code>, or <code>patch</code>).
     Example: <code>docker-compose run --rm bump minor</code></p>
-<p>This wil create a new branch, updates all affected files with the new version, and commit the changes to the branch.</p>
+<p>This will update all affected files (including changelog) with the new version on whichever branch you are on</p>
 </li>
 <li>
-<p>Push the new branch to create a new pull request.</p>
+<p>Create a pull request from your branch.</p>
 </li>
 <li>Get the pull request approved.</li>
 <li>Merge the pull request to the default branch.</li>
 </ol>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Take care not to run bump script more than once!</p>
+</div>
 <p>Merging the pull request will trigger a GitHub Action that will create a new release. The creation of this new
 release will trigger a GitHub Action that will trigger a wheel build &amp; a source distributions of the package and push them to
 <a href="https://pypi.org/project/pygitops/">PyPI</a>.</p>
