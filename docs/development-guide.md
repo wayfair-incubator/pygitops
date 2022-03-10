@@ -90,15 +90,17 @@ grab the version from `__init__.py` without actually importing any dependencies.
 
 Once the package is ready to be released, there are a few things that need to be done:
 
-1. Start with a local clone of the repo on the default branch with a clean working tree.
-2. Run the version bump script with the appropriate part name (`major`, `minor`, or `patch`).
+1. Run the version bump script with the appropriate part name (`major`, `minor`, or `patch`).
     Example: `docker-compose run --rm bump minor`
     
-    This wil create a new branch, updates all affected files with the new version, and commit the changes to the branch.
+    This will update all affected files (including changelog) with the new version on whichever branch you are on
 
-3. Push the new branch to create a new pull request.
-4. Get the pull request approved.
-5. Merge the pull request to the default branch.
+2. Create a pull request from your branch.
+3. Get the pull request approved.
+4. Merge the pull request to the default branch.
+
+!!! warning
+    Take care not to run bump script more than once!
 
 Merging the pull request will trigger a GitHub Action that will create a new release. The creation of this new
 release will trigger a GitHub Action that will trigger a wheel build & a source distributions of the package and push them to
