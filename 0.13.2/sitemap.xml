@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://wayfair-incubator.github.io/pygitops/0.13.2/</loc>
+         <lastmod>2022-03-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://wayfair-incubator.github.io/pygitops/0.13.2/api/</loc>
+         <lastmod>2022-03-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://wayfair-incubator.github.io/pygitops/0.13.2/development-guide/</loc>
+         <lastmod>2022-03-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://wayfair-incubator.github.io/pygitops/0.13.2/making-changes-on-feature-branch/</loc>
+         <lastmod>2022-03-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://wayfair-incubator.github.io/pygitops/0.13.2/updating-repo/</loc>
+         <lastmod>2022-03-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://wayfair-incubator.github.io/pygitops/0.13.2/why-pygitops/</loc>
+         <lastmod>2022-03-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+</urlset>
