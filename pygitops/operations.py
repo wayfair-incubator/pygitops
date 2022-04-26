@@ -71,7 +71,7 @@ def stage_commit_push_changes(
     origin = repo.remotes.origin
     if not kwargs_to_push:
         kwargs_to_push = {}
-    push_info = origin.push(branch_name, **kwargs_to_push)[0]
+    push_info = origin.push(branch_name, **kwargs_to_push or {})[0]
 
     _logger.debug(
         f"Issued commit to remote branch: {branch_name}, with resulting summary: {push_info.summary} and flags: {push_info.flags}. (see flag documentation: https://gitpython.readthedocs.io/en/stable/reference.html#git.remote.PushInfo)"
