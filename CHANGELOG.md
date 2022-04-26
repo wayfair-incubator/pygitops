@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Add kwarg pass-through parameter to `stage_commit_push_changes`, allowing users to provide keyword arguments to `git push`.
 
+### Changed
+
+* Bumped mkdocstrings from 0.17.0 to 0.18.1
+* Bump black from 22.1.0 to 22.3.0
+
+### Removed
+
+* Support for Python 3.6
+
+
 ## [0.13.2] - 2022-03-10
 
 ### Changed
