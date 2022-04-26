@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Add kwarg pass-through parameter to `stage_commit_push_changes`, allowing users to provide keyword arguments to `git push`.
+
 ## [0.13.2] - 2022-03-10
 
 ### Changed

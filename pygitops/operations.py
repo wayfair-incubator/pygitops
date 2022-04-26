@@ -25,7 +25,7 @@ def stage_commit_push_changes(
     actor: Actor,
     commit_message: str,
     items_to_stage: Optional[List[Path]] = None,
-    kwargs_to_push: Optional[Dict] = None
+    kwargs_to_push: Optional[Dict] = None,
 ) -> None:
     """
     Handles the logic of persisting filesystem changes to a local repository via a commit to a feature branch.
