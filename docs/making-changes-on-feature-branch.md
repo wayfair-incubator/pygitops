@@ -22,7 +22,7 @@ SOME_DIRECTORY = 'some-directory'
 # create a Repo object in the current directory (see https://gitpython.readthedocs.io/en/stable/tutorial.html#meet-the-repo-type)
 repo = Repo(SOME_DIRECTORY)
 
-with feature_branch(REPO, NEW_BRANCH_NAME):
+with feature_branch(repo, NEW_BRANCH_NAME):
     # create a new file with a list of chores
     (Path(SOME_DIRECTORY) / NEW_FILE_NAME).write_text('- [ ] haircut\n- [ ] groceries\n- [ ] dishes')
 
@@ -61,9 +61,12 @@ from git import Actor, Repo
 
 NEW_BRANCH_NAME = 'some-new-branch'
 ACTOR = Actor('git-username', 'git-email@example.com')
-REPO = Repo(SOME_DIRECTORY)
-COMMIT_MESSAGE = 'automated submodule update
+COMMIT_MESSAGE = 'automated submodule update'
 SOME_SUBMODULE_REPO_NAME = 'some-repo'
+SOME_DIRECTORY = 'some-directory'
+
+# create a Repo object in the current directory (see https://gitpython.readthedocs.io/en/stable/tutorial.html#meet-the-repo-type)
+repo = Repo(SOME_DIRECTORY)
 
 # update submodule's reference to remote upstream, push feature branch with changes
 with feature_branch(repo, NEW_BRANCH_NAME):
