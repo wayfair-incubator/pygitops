@@ -296,6 +296,21 @@ def test_stage_commit_push_changes__no_files_to_stage__raises_pygitops_error(tmp
             )
 
 
+def test_stage_commit_push_changes__force_push_flag__changes_pushed(tmp_path):
+    repos = _initialize_multiple_empty_repos(tmp_path)
+    local_repo = repos.local_repo
+    with feature_branch(local_repo, SOME_FEATURE_BRANCH):
+        test_file_path = Path(local_repo.working_dir) / SOME_CONTENT_FILENAME
+        test_file_path.write_text("content one")
+        stage_commit_push_changes(local_repo, SOME_FEATURE_BRANCH, SOME_ACTOR, SOME_COMMIT_MESSAGE)
+
+    branch = local_repo.create_head(SOME_FEATURE_BRANCH, force=True)
+    branch.checkout()
+    test_file_path.write_text("content two")
+    stage_commit_push_changes(local_repo, SOME_FEATURE_BRANCH, SOME_ACTOR, SOME_COMMIT_MESSAGE, kwargs_to_push={"force": True})
+
+
+
 def test_feature_branch__untracked_files_present__raises_pygitops_error(mocker):
     untracked_file = "foo.py"
     repo = mocker.Mock(

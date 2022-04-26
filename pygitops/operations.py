@@ -2,7 +2,7 @@ import logging
 import re
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Iterator, List, Optional
+from typing import Dict, Iterator, List, Optional
 
 from filelock import FileLock
 from git import Actor, GitError, Repo
@@ -25,6 +25,7 @@ def stage_commit_push_changes(
     actor: Actor,
     commit_message: str,
     items_to_stage: Optional[List[Path]] = None,
+    kwargs_to_push: Optional[Dict] = None
 ) -> None:
     """
     Handles the logic of persisting filesystem changes to a local repository via a commit to a feature branch.
@@ -37,6 +38,7 @@ def stage_commit_push_changes(
     :param commit_message: Text to be used as the commit message.
     :param items_to_stage: List of files and directories that will be staged for commit, will be inferred if parameter not provided.
         Please use an empty list to signal that there are intentionally no items to stage, and items_to_stage should not be inferred.
+    :param kwargs_to_push: dictionary of arguments to pass to the push operation
     :raises PyGitOpsStagedItemsError: Items to stage are not present or could not be determined.
     :raises PyGitOpsError: There was an error staging, committing, or pushing code.
     """
@@ -67,7 +69,9 @@ def stage_commit_push_changes(
 
     # push changes to the remote branch
     origin = repo.remotes.origin
-    push_info = origin.push(branch_name)[0]
+    if not kwargs_to_push:
+        kwargs_to_push = {}
+    push_info = origin.push(branch_name, **kwargs_to_push)[0]
 
     _logger.debug(
         f"Issued commit to remote branch: {branch_name}, with resulting summary: {push_info.summary} and flags: {push_info.flags}. (see flag documentation: https://gitpython.readthedocs.io/en/stable/reference.html#git.remote.PushInfo)"
