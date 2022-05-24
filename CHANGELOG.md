@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+* Calls to `Path.mkdir` are now made with the `exist_ok=True` parameter, eliminating a race condition when multiple workers are   attempting to create the same directory.
+
 * Bump bandit from 1.7.1 to 1.7.2
 * Bump mkdocs-material from 8.1.2 to 8.1.8
 * Bump actions/checkout from 2 to 3
@@ -16,10 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Bump actions/upload-artifact from 2 to 3
 * Bump mypy from 0.931 to 0.950
 
-
-### Changed
-
-* Calls to `Path.mkdir` are now made with the `exist_ok=True` parameter, eliminating a race condition when multiple workers are attempting to create the same directory.
 
 ## [0.14.0] - 2022-04-26
 
