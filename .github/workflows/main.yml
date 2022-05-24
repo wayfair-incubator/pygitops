@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+        uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install dependencies
@@ -31,9 +31,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install dependencies
@@ -48,8 +48,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Check out code
-          uses: actions/checkout@v2
-        - uses: actions/setup-python@v2
+          uses: actions/checkout@v3
+        - uses: actions/setup-python@v3
           with:
             python-version: ${{ env.PYTHON_VERSION }}
         - name: Install dependencies
@@ -64,8 +64,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+        uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install dependencies
@@ -81,8 +81,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Check out code
-          uses: actions/checkout@v2
-        - uses: actions/setup-python@v2
+          uses: actions/checkout@v3
+        - uses: actions/setup-python@v3
           with:
             python-version: ${{ env.PYTHON_VERSION }}
         - name: Install dependencies
@@ -101,8 +101,8 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10"]
     steps:
         - name: Check out code
-          uses: actions/checkout@v2
-        - uses: actions/setup-python@v2
+          uses: actions/checkout@v3
+        - uses: actions/setup-python@v3
           with:
             python-version: ${{ matrix.python-version }}
         - name: Install dependencies
@@ -115,7 +115,7 @@ jobs:
           run: pytest --cov-report xml:coverage-${{ matrix.python-version }}.xml --junitxml=test-results-${{ matrix.python-version }}.xml
 
         - name: Upload pytest test results artifact
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v3
           with:
             name: pytest-results-${{ matrix.python-version }}
             path: test-results-${{ matrix.python-version }}.xml
@@ -123,7 +123,7 @@ jobs:
           if: ${{ always() }}
 
         - name: Upload coverage results artifact
-          uses: actions/upload-artifact@v2
+          uses: actions/upload-artifact@v3
           with:
             name: pytest-coverage-${{ matrix.python-version }}
             path: coverage-${{ matrix.python-version }}.xml
@@ -142,9 +142,9 @@ jobs:
     continue-on-error: true
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
@@ -158,7 +158,7 @@ jobs:
         run: mkdocs build --strict
 
       - name: Upload docs as an artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: docs-site
           path: site/
@@ -168,9 +168,9 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
