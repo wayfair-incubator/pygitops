@@ -178,8 +178,7 @@ def get_updated_repo(repo_url: str, clone_dir: PathOrStr, **kwargs) -> Repo:
     clone_dir = Path(clone_dir)
 
     # if clone dir does not exist, create it, and all parent dirs
-    if not clone_dir.exists():
-        clone_dir.mkdir(parents=True)
+    clone_dir.mkdir(parents=True, exist_ok=True)
 
     git_lockfile_path = _get_lockfile_path(str(clone_dir))
 

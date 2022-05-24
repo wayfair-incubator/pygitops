@@ -88,8 +88,7 @@ def checkout_pull_branch(repo: Repo, branch: str) -> None:
 def get_lockfile_path(repo_name: str) -> Path:
     """Get a lockfile to lock a git repo."""
 
-    if not _lockfile_path.is_dir():
-        _lockfile_path.mkdir()
+    _lockfile_path.mkdir(exist_ok=True)
 
     return _lockfile_path / f"{repo_name}_lock_file.lock"
 
