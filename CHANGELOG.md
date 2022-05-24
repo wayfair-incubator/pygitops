@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+* Calls to `Path.mkdir` are now made with the `exist_ok=True` parameter, eliminating a race condition when multiple workers are attempting to create the same directory.
+
 ## [0.14.0] - 2022-04-26
 
 ### Added
