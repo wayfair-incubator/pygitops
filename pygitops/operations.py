@@ -195,6 +195,8 @@ def get_updated_repo(repo_url: str, clone_dir: PathOrStr, **kwargs) -> Repo:
                 _checkout_pull_branch(repo, branch, force=force)
                 return repo
 
+            # remove 'force' from kwargs if present, as it is not supported by clone
+            kwargs.pop("force", None)
             return Repo.clone_from(repo_url, clone_dir, **kwargs)
         except GitError as e:
             clean_repo_url = _scrub_github_auth(repo_url)

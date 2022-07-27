@@ -504,12 +504,18 @@ def test_get_updated_repo__repo_dne__kwargs_passed_to_clone_from(mocker, tmp_pat
 
     clone_from_mock = mocker.patch("pygitops.operations.Repo.clone_from")
 
-    some_kwargs = {"some_arg": "some-value", "another_arg": "another-value"}
+    some_kwargs = {
+        "some_arg": "some-value",
+        "another_arg": "another-value",
+        "force": True,
+    }
 
     get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, **some_kwargs)
 
     clone_from_mock.assert_called_once_with(
-        SOME_CLONE_REPO_URL, tmp_path, **some_kwargs
+        SOME_CLONE_REPO_URL,
+        tmp_path,
+        **{"some_arg": "some-value", "another_arg": "another-value"},
     )
 
 
