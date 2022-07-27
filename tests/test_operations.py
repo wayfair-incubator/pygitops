@@ -742,7 +742,7 @@ def _initialize_repo_with_content(repo_path):
     """
 
     repo_path.mkdir()
-    repo = Repo.init(repo_path)
+    repo = Repo.init(repo_path, initial_branch=GIT_BRANCH_MASTER)
 
     _commit_content(repo, SOME_INITIAL_CONTENT, commit_message="Initial commit")
 
