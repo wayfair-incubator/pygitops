@@ -215,7 +215,7 @@ def get_default_branch(repo: Repo) -> str:
     :param repo: git.Repo instance.
     :return: string representing name of default branch.
     """
-    git_ref_regex = r"refs\/remotes\/origin\/(\w*)"
+    git_ref_regex = r"refs\/remotes\/origin\/([\w*\-\.]+)"
     symbolic_ref_head = "refs/remotes/origin/HEAD"
 
     # local repo should be aware of branch objects prior to running the `set-head` command, where an unknown branch might be present
