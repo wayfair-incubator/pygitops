@@ -190,7 +190,9 @@ def get_updated_repo(repo_url: str, clone_dir: PathOrStr, **kwargs) -> Repo:
                 repo = Repo(clone_dir)
                 # pull down latest changes from `branch` if provided in kwargs, deferring to repo default branch
                 branch = kwargs.get("branch") or get_default_branch(repo)
-                _checkout_pull_branch(repo, branch)
+                # destroy any local changes to tracked and untracked files if `force` is provided in kwargs
+                force = kwargs.get("force") or False
+                _checkout_pull_branch(repo, branch, force=force)
                 return repo
 
             return Repo.clone_from(repo_url, clone_dir, **kwargs)

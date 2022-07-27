@@ -137,6 +137,42 @@ def test_pull_branch__head_not_present__head_created(mocker):
     test_branch_head_mock.set_tracking_branch.assert_called_once()
 
 
+def test_pull_branch__head_present_and_force_requested__tracked_and_untracked_changes_removed(
+    mocker,
+):
+    """
+    In the case where checkout_pull_branch() is invoked, and a head for the specified branch is present,
+    and the "force" option is True, the operation should perform a force-checkout and remove untracked files.
+    """
+    branch = "test_branch"
+
+    git_clean_mock = mocker.Mock()
+    git_mock = mocker.Mock(clean=git_clean_mock)
+
+    checkout_mock = mocker.Mock()
+
+    test_branch_head_mock = mocker.Mock(
+        checkout=checkout_mock,
+    )
+
+    origin_mock = mocker.Mock(refs={branch: mock.ANY})
+    create_head_mock = mocker.Mock()
+
+    repo = mocker.Mock(
+        heads={branch: test_branch_head_mock},
+        remotes=mocker.Mock(origin=origin_mock),
+        create_head=create_head_mock,
+        git=git_mock,
+    )
+
+    checkout_pull_branch(repo, branch, force=True)
+
+    create_head_mock.assert_not_called()
+    test_branch_head_mock.assert_not_called()
+    checkout_mock.assert_called_once_with(force=True)
+    git_clean_mock.assert_called_once()
+
+
 def test_pull_branch__branch_not_in_refs__raises_pygitops_error(mocker):
     """
     In the case where the provided branch is not in the list of remote refs, A GitOperationError should be raised

@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+* Added optional `force` arg to `checkout_pull_branch`, allowing any uncommitted changes in an existing repository to be discarded. (#246)
 
 ## [0.15.0] - 2022-05-24
 
@@ -92,3 +97,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - First public release!!!
+
+[Unreleased]: https://github.com/wayfair-incubator/pygitops/compare/v0.15.0...main
+[0.15.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.14.0...v0.15.0
+[0.14.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.13.2...v0.14.0
+[0.13.2]: https://github.com/wayfair-incubator/pygitops/compare/v0.13.1...v0.13.2
+[0.13.1]: https://github.com/wayfair-incubator/pygitops/compare/v0.13.0...v0.13.1
+[0.13.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.12.1...v0.13.0
+[0.12.1]: https://github.com/wayfair-incubator/pygitops/compare/v0.12.0...v0.12.1
+[0.12.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.11.1...v0.12.0
+[0.11.1]: https://github.com/wayfair-incubator/pygitops/compare/v0.11.0...v0.11.1
+[0.11.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.10.0...v0.11.0
+[0.10.0]: https://github.com/wayfair-incubator/pygitops/compare/af37d9a...v0.10.0

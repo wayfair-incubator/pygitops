@@ -42,7 +42,7 @@ def lock_repo(repo: Repo) -> Iterator[None]:
         )
 
 
-def checkout_pull_branch(repo: Repo, branch: str) -> None:
+def checkout_pull_branch(repo: Repo, branch: str, force: bool = False) -> None:
     """
     Pull changes from the specified branch of a repo.
 
@@ -72,11 +72,17 @@ def checkout_pull_branch(repo: Repo, branch: str) -> None:
             f"[Pull Branch] Set tracking branch successful for repo: {repo}, branch: {branch}"
         )
 
-    # checkout local `branch` to working tree
-    repo.heads[branch].checkout()
+    # checkout local `branch` to working tree, optionally discarding changes to the index and working tree
+    repo.heads[branch].checkout(force=force)
     _logger.debug(
         f"[Pull Branch] Checkout local branch successful for repo: {repo}, branch: {branch}"
     )
+
+    if force:
+        repo.git.clean("-df")
+        _logger.debug(
+            f"[Pull Branch] Removed untracked files for repo: {repo}, branch: {branch}"
+        )
 
     # pull the changes from the remote branch
     origin.pull(branch)
