@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.0] - 2022-07-27
+
 ### Added
 
 * Added optional `force` arg to `checkout_pull_branch`, allowing any uncommitted changes in an existing repository to be discarded. (#246)
@@ -102,7 +104,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First public release!!!
 
-[Unreleased]: https://github.com/wayfair-incubator/pygitops/compare/v0.15.0...main
+[Unreleased]: https://github.com/wayfair-incubator/pygitops/compare/v0.16.0...main
+[0.16.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.13.2...v0.14.0
 [0.13.2]: https://github.com/wayfair-incubator/pygitops/compare/v0.13.1...v0.13.2
