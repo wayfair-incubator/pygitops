@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * Added optional `force` arg to `checkout_pull_branch`, allowing any uncommitted changes in an existing repository to be discarded. (#246)
 
+### Fixed
+
+* Fixed `get_default_branch` not returning the full branch name if it contains dashes or periods (#250)
+
 ## [0.15.0] - 2022-05-24
 
 ### Changed

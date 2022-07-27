@@ -718,9 +718,13 @@ def test_get_default_branch__match_index_error__raises_pygitops_error(mocker):
         get_default_branch(repo_mock)
 
 
-def test_get_default_branch__default_branch_returned(tmp_path):
+@pytest.mark.parametrize(
+    "branch_name",
+    ["main", "master", "2.x", "name-with-dashes", "name_with_underscores"],
+)
+def test_get_default_branch__default_branch_returned(tmp_path, branch_name):
 
-    repos = _initialize_multiple_empty_repos(tmp_path)
+    repos = _initialize_multiple_empty_repos(tmp_path, initial_branch=branch_name)
     remote_repo = repos.remote_repo
     local_repo = repos.local_repo
 
@@ -831,7 +835,9 @@ def _assert_branch_state_stage_commit_push_changes__file_removed(
 
 
 # Helper functions for testing git operations
-def _initialize_multiple_empty_repos(base_path) -> MultipleTestingRepos:
+def _initialize_multiple_empty_repos(
+    base_path, initial_branch="main"
+) -> MultipleTestingRepos:
     """
     Helper function used to initialize and configure local, remote, and clone repos for integration testing.
     """
@@ -848,7 +854,7 @@ def _initialize_multiple_empty_repos(base_path) -> MultipleTestingRepos:
     clone_path.mkdir()
 
     # The remote is set up as a bare repository
-    remote_repo = Repo.init(remote_path)
+    remote_repo = Repo.init(remote_path, initial_branch=initial_branch)
 
     # give the remote repo some initial commit history
     new_file_path = remote_path / SOME_CONTENT_FILENAME

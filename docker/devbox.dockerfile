@@ -19,7 +19,10 @@ ENV PIP_NO_CACHE_DIR "true"
 RUN mkdir /app && chown ${UID}:${GID} /app
 
 USER root
-RUN apt-get install git-core && apt-get clean
+RUN echo "deb http://deb.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/buster-backports.list \
+    && apt-get update \
+    && apt-get install -y -t buster-backports git-core \
+    && apt-get clean
 
 USER ${_USER}
 
