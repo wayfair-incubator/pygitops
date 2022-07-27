@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+* Added optional `force` arg to `checkout_pull_branch`, allowing any uncommitted changes in an existing repository to be discarded. (#246)
+
 ## [0.15.0] - 2022-05-24
 
 ### Changed

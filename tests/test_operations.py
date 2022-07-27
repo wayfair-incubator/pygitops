@@ -531,8 +531,12 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_de
     repo_mock.remotes.origin.pull.assert_called_once()
 
 
+@pytest.mark.parametrize(
+    "force",
+    [True, False],
+)
 def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_provided_branch(
-    mocker, tmp_path
+    mocker, tmp_path, force
 ):
 
     repo_mock = mocker.Mock()
@@ -543,10 +547,14 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_pr
     )
     mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
 
-    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path, branch=SOME_FEATURE_BRANCH)
+    get_updated_repo(
+        SOME_CLONE_REPO_URL, tmp_path, branch=SOME_FEATURE_BRANCH, force=force
+    )
 
     get_default_branch_mock.assert_not_called()
-    _checkout_pull_branch_mock.assert_called_once_with(repo_mock, SOME_FEATURE_BRANCH)
+    _checkout_pull_branch_mock.assert_called_once_with(
+        repo_mock, SOME_FEATURE_BRANCH, force=force
+    )
 
 
 def test_get_updated_repo__clone_dirs_dne__clone_dirs_created(mocker, tmp_path):
