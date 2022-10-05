@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Check out code
-          uses: actions/checkout@v3
+          uses: actions/checkout@v3.1.0
         - uses: actions/setup-python@v3
           with:
             python-version: ${{ env.PYTHON_VERSION }}
@@ -64,7 +64,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
       - uses: actions/setup-python@v3
         with:
           python-version: ${{ env.PYTHON_VERSION }}
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - name: Check out code
-          uses: actions/checkout@v3
+          uses: actions/checkout@v3.1.0
         - uses: actions/setup-python@v3
           with:
             python-version: ${{ env.PYTHON_VERSION }}
@@ -101,7 +101,7 @@ jobs:
         python-version: ["3.7", "3.8", "3.9", "3.10"]
     steps:
         - name: Check out code
-          uses: actions/checkout@v3
+          uses: actions/checkout@v3.1.0
         - uses: actions/setup-python@v3
           with:
             python-version: ${{ matrix.python-version }}
@@ -142,7 +142,7 @@ jobs:
     continue-on-error: true
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
 
       - uses: actions/setup-python@v3
         with:
@@ -168,7 +168,7 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3.1.0
 
       - uses: actions/setup-python@v3
         with:
