@@ -12,6 +12,7 @@ from pygitops._util import get_lockfile_path as _get_lockfile_path
 from pygitops._util import is_git_repo as _is_git_repo
 from pygitops._util import lock_repo as _lock_repo
 from pygitops._util import push_error_present as _push_error_present
+from pygitops._util import repo_working_dir as _repo_working_dir
 from pygitops.exceptions import PyGitOpsError, PyGitOpsStagedItemsError
 from pygitops.remote_git_utils import _scrub_github_auth
 from pygitops.types import PathOrStr
@@ -43,7 +44,7 @@ def stage_commit_push_changes(
     :raises PyGitOpsError: There was an error staging, committing, or pushing code.
     """
     index = repo.index
-    workdir_path = Path(repo.working_dir)
+    workdir_path = Path(_repo_working_dir(repo))
 
     # We will determine items_to_stage if the parameter was not provided.
     if items_to_stage is None:
