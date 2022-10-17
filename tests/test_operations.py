@@ -7,7 +7,7 @@ import pytest
 from git import Actor, GitCommandError, GitError, Repo
 
 from pygitops._constants import GIT_BRANCH_MAIN, GIT_BRANCH_MASTER
-from pygitops._util import checkout_pull_branch
+from pygitops._util import checkout_pull_branch, repo_working_dir
 from pygitops.exceptions import PyGitOpsError, PyGitOpsStagedItemsError
 from pygitops.operations import (
     feature_branch,
@@ -68,7 +68,7 @@ def test_stage_commit_push_changes__push_failure__raises_pygitops_error(
 
     with feature_branch(cloned_repo, SOME_FEATURE_BRANCH):
         # Write to remote from the clone, then pull from local
-        test_file_path = Path(cloned_repo.working_dir) / SOME_CONTENT_FILENAME
+        test_file_path = Path(repo_working_dir(cloned_repo)) / SOME_CONTENT_FILENAME
         test_file_path.write_text(SOME_INITIAL_CONTENT)
 
         with pytest.raises(PyGitOpsError, match=SOME_FEATURE_BRANCH):
@@ -78,17 +78,17 @@ def test_stage_commit_push_changes__push_failure__raises_pygitops_error(
 
 
 def _delete_existing_file(local_repo: Repo, filename: str) -> None:
-    test_second_file_path = Path(local_repo.working_dir) / filename
+    test_second_file_path = Path(repo_working_dir(local_repo)) / filename
     test_second_file_path.unlink()
 
 
 def _modify_existing_file(local_repo: Repo, filename: str, content: str) -> None:
-    test_file_path = Path(local_repo.working_dir) / filename
+    test_file_path = Path(repo_working_dir(local_repo)) / filename
     test_file_path.write_text(content)
 
 
 def _add_new_file(local_repo: Repo, filename: str) -> None:
-    test_other_file_path = Path(local_repo.working_dir) / filename
+    test_other_file_path = Path(repo_working_dir(local_repo)) / filename
     test_other_file_path.touch()
 
 
@@ -188,7 +188,7 @@ def test_stage_commit_push_changes__add_new_file__change_persisted(tmp_path):
 
     with feature_branch(local_repo, SOME_FEATURE_BRANCH):
 
-        test_file_path = Path(local_repo.working_dir) / SOME_CONTENT_FILENAME
+        test_file_path = Path(repo_working_dir(local_repo)) / SOME_CONTENT_FILENAME
         test_file_path.write_text(SOME_INITIAL_CONTENT)
 
         # act, asserting expected state before and after operation
@@ -217,7 +217,7 @@ def test_stage_commit_push_changes__remove_old_file__change_persisted(tmp_path):
     cloned_repo = repos.cloned_repo
 
     with feature_branch(cloned_repo, SOME_FEATURE_BRANCH):
-        test_file_path = Path(cloned_repo.working_dir) / SOME_CONTENT_FILENAME
+        test_file_path = Path(repo_working_dir(cloned_repo)) / SOME_CONTENT_FILENAME
         test_file_path.write_text(SOME_INITIAL_CONTENT)
 
         stage_commit_push_changes(
@@ -231,7 +231,7 @@ def test_stage_commit_push_changes__remove_old_file__change_persisted(tmp_path):
         with _assert_branch_state_stage_commit_push_changes__file_removed(
             remote_repo, local_repo
         ):
-            removal_path = Path(local_repo.working_dir) / SOME_CONTENT_FILENAME
+            removal_path = Path(repo_working_dir(local_repo)) / SOME_CONTENT_FILENAME
             removal_path.unlink()
 
             # Commit the removal
@@ -260,9 +260,9 @@ def test_stage_commit_push_changes__with_staged_files__adds_only_requested_file(
 
     with feature_branch(local_repo, SOME_FEATURE_BRANCH):
 
-        test_file_path = Path(local_repo.working_dir) / SOME_CONTENT_FILENAME
+        test_file_path = Path(repo_working_dir(local_repo)) / SOME_CONTENT_FILENAME
         test_file_path.write_text(SOME_INITIAL_CONTENT)
-        other_file_path = Path(local_repo.working_dir) / other_file
+        other_file_path = Path(repo_working_dir(local_repo)) / other_file
         other_file_path.write_text("other test content")
 
         # act, asserting expected state before and after operation
@@ -300,7 +300,7 @@ def test_stage_commit_push_changes__force_push_flag__changes_pushed(tmp_path):
     repos = _initialize_multiple_empty_repos(tmp_path)
     local_repo = repos.local_repo
     with feature_branch(local_repo, SOME_FEATURE_BRANCH):
-        test_file_path = Path(local_repo.working_dir) / SOME_CONTENT_FILENAME
+        test_file_path = Path(repo_working_dir(local_repo)) / SOME_CONTENT_FILENAME
         test_file_path.write_text("content one")
         stage_commit_push_changes(
             local_repo, SOME_FEATURE_BRANCH, SOME_ACTOR, SOME_COMMIT_MESSAGE
@@ -807,7 +807,7 @@ def _assert_get_updated_repo_state(repo):
 def _assert_branch_state_stage_commit_push_changes__file_added(remote_repo, local_repo):
     """Run assertions before and after staging, committing, and pushing for a given repo pair."""
 
-    local_content_path = Path(local_repo.working_dir) / SOME_CONTENT_FILENAME
+    local_content_path = Path(repo_working_dir(local_repo)) / SOME_CONTENT_FILENAME
 
     # The file should exist only on local before pushing
     assert SOME_INITIAL_CONTENT in local_content_path.read_text()
@@ -826,7 +826,7 @@ def _assert_branch_state_stage_commit_push_changes__file_removed(
     remote_repo, local_repo
 ):
     """Run assertions before and after staging, committing, and pushing for a given repo pair."""
-    local_content_path = Path(local_repo.working_dir) / SOME_CONTENT_FILENAME
+    local_content_path = Path(repo_working_dir(local_repo)) / SOME_CONTENT_FILENAME
 
     # The file should exist only on local before pushing
     assert SOME_INITIAL_CONTENT in local_content_path.read_text()
@@ -872,8 +872,8 @@ def _initialize_multiple_empty_repos(
 
     # Simplify things by assuring local copies are cloned from the remote.
     # Because they are clones, they will have 'origin' correctly configured
-    local_repo = Repo.clone_from(remote_repo.working_dir, local_path)
-    cloned_repo = Repo.clone_from(remote_repo.working_dir, clone_path)
+    local_repo = Repo.clone_from(repo_working_dir(remote_repo), local_path)
+    cloned_repo = Repo.clone_from(repo_working_dir(remote_repo), clone_path)
 
     return MultipleTestingRepos(
         remote_repo=remote_repo, local_repo=local_repo, cloned_repo=cloned_repo
@@ -889,7 +889,7 @@ def _get_diff(repo: Repo) -> str:
     """
 
     index = repo.index
-    workdir_path = Path(repo.working_dir)
+    workdir_path = Path(repo_working_dir(repo))
 
     untracked_file_paths = [Path(f) for f in repo.untracked_files]
     items_to_stage = untracked_file_paths + [Path(f.a_path) for f in index.diff(None)]

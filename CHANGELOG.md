@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.16.1] - 2022-10-16
+
+### Added
+
+* Define new exception `PyGitOpsWorkingDirError` extending from `PyGitOpsError`.
+  * Exception raised in cases where `git.Repo.working_dir` is None (see below).
+
+### Changed
+
+* Adjust repo working_dir path operations to comply with `gitpython` type hint changes.
+  * Between `gitpython==3.1.18` -> `3.1.29`, `git.Repo.working_dir` was typed as `Optional`.
+  * Since many `os` and `pathlib` operations rely on `Repo.working_dir` and expect `Union[str, os.PathLike]`, code touching `repo.working_dir` was updated to comply with this difference. 
+
 ## [0.16.0] - 2022-07-27
 
 ### Added

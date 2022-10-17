@@ -1,14 +1,15 @@
 import logging
 import os
 from contextlib import contextmanager
+from os import PathLike
 from pathlib import Path
-from typing import Iterator
+from typing import Iterator, Union
 
 from filelock import FileLock, Timeout
 from git import PushInfo, Repo
 from git.exc import InvalidGitRepositoryError
 
-from pygitops.exceptions import PyGitOpsError
+from pygitops.exceptions import PyGitOpsError, PyGitOpsWorkingDirError
 
 _logger = logging.getLogger(__name__)
 _lockfile_path = Path("lockfiles")
@@ -24,7 +25,7 @@ def lock_repo(repo: Repo) -> Iterator[None]:
     :param repo: The repo to lock on.
     """
 
-    repo_name = os.path.basename(os.path.normpath(repo.working_dir))
+    repo_name = os.path.basename(os.path.normpath(repo_working_dir(repo)))
     lockfile_name = str(get_lockfile_path(repo_name))
 
     lock = FileLock(lockfile_name)
@@ -123,3 +124,25 @@ def is_git_repo(path: Path) -> bool:
         return True
     except InvalidGitRepositoryError:
         return False
+
+
+def repo_working_dir(repo: Repo) -> Union[str, PathLike]:
+    """
+    Between gitpython 3.1.18 and 3.1.29, `git.Repo.working_dir` is now typed as Optional.
+
+    The `os.path` and `pathlib.Path` operations are not typed to support `Optional`.
+    Calling this function to access this property will handle cases where `repo.working_dir` is None, although it should never happen in practice.
+
+    :param repo: The repo whose `working_dir` we are interested in.
+    :raises PyGitOpsWorkingDirError: Raise error if `working_dir` is unexpectedly None.
+    :return str: `working_dir` of the repo
+    """
+    working_dir = repo.working_dir
+
+    # Can replace with assignment operator when python 3.7 support is dropped
+    if working_dir is None:
+        raise PyGitOpsWorkingDirError(
+            f"The working_dir for repo {repo} is unexpectedly None"
+        )
+
+    return working_dir
