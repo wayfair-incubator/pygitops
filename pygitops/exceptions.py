@@ -8,3 +8,7 @@ class PyGitOpsValueError(PyGitOpsError):
 
 class PyGitOpsStagedItemsError(PyGitOpsError):
     """There were no items to stage for commit."""
+
+
+class PyGitOpsWorkingDirError(PyGitOpsError):
+    """There was an error with the filesystem, namely `git.Repo.working_dir` is unexpectedly None."""

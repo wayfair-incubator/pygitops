@@ -13,8 +13,9 @@ from pygitops._util import (
     is_git_repo,
     lock_repo,
     push_error_present,
+    repo_working_dir,
 )
-from pygitops.exceptions import PyGitOpsError
+from pygitops.exceptions import PyGitOpsError, PyGitOpsWorkingDirError
 
 SOME_REPO_NAME = "some-repo-name"
 
@@ -193,3 +194,19 @@ def test_is_git_repo__not_a_git_repo__returns_false(tmp_path):
 def test_is_git_repo__is_a_git_repo__returns_true(tmp_path):
     Repo.init(tmp_path)
     assert is_git_repo(tmp_path)
+
+
+def test_repo_working_dir__working_dir_none__raises_pygitops_working_dir_error(mocker):
+
+    repo = mocker.Mock(working_dir=None)
+    with pytest.raises(PyGitOpsWorkingDirError):
+        repo_working_dir(repo)
+
+
+def test_repo_working_dir__working_dir_present__expected_working_dir_returned(tmp_path):
+
+    repo_path = tmp_path / SOME_REPO_NAME
+    repo_path.mkdir()
+    repo = Repo.init(repo_path)
+
+    assert repo_working_dir(repo) == str(repo_path)
