@@ -1,2 +1,2 @@
-filelock~=3.4
+filelock==3.8.0
 GitPython==3.1.29
