@@ -2,8 +2,7 @@
 
 set -eo pipefail
 
-BLACK_ACTION="--check"
-ISORT_ACTION="--check-only"
+RUFF_FIX=""
 
 function usage
 {
@@ -17,8 +16,7 @@ while [[ $# -gt 0 ]]; do
     arg="$1"
     case $arg in
         --format-code)
-        BLACK_ACTION="--quiet"
-        ISORT_ACTION=""
+        RUFF_FIX="--fix"
         ;;
         -h|--help)
         usage
@@ -37,17 +35,18 @@ done
 # only generate html locally
 pytest tests --cov-report html
 
-echo "Running MyPy..."
-mypy pygitops tests
+echo "Running ruff..."
+if [ -z "${RUFF_FIX}" ]; then
+    # ruff check: linter - finds code quality issues (unused imports, bugs, security issues)
+    ruff check pygitops tests
+    # ruff format: formatter - ensures consistent code style (indentation, quotes, line length)
+    ruff format --check pygitops tests
+else
+    # ruff check --fix: auto-fix linting issues where possible
+    ruff check --fix pygitops tests
+    # ruff format: auto-format code style
+    ruff format pygitops tests
+fi
 
-echo "Running black..."
-black ${BLACK_ACTION} pygitops tests
-
-echo "Running iSort..."
-isort ${ISORT_ACTION} pygitops tests
-
-echo "Running flake8..."
-flake8 pygitops tests
-
-echo "Running bandit..."
-bandit --ini .bandit --quiet -r pygitops
+echo "Running mypy..."
+mypy pygitops
