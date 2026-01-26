@@ -81,6 +81,10 @@ ignore = [
     "S101",  # assert used (acceptable in tests)
 ]
 
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["S105"]  # test credentials are not real secrets
+"pygitops/remote_git_utils.py" = ["S105"]  # regex patterns for scrubbing are not secrets
+
 [tool.ruff.lint.isort]
 known-first-party = ["pygitops"]
 

@@ -51,14 +51,12 @@ def test_lock_repo__filelock_acquire_timeout__raises_pygitops_error(mocker):
     repo_mock = mocker.Mock(working_dir=f"some-repo-namespace/{SOME_REPO_NAME}")
     mocker.patch("pygitops._util.FileLock", return_value=FakeFileLock())
 
-    with pytest.raises(PyGitOpsError):
-        with lock_repo(repo_mock):
-            pass
+    with pytest.raises(PyGitOpsError), lock_repo(repo_mock):
+        pass
 
 
 @pytest.mark.parametrize("path_exists", (True, False))
 def test_get_lockfile_path__expected_path_returned(mocker, tmp_path, path_exists):
-
     mocker.patch("pygitops._util._lockfile_path", new=tmp_path)
 
     if path_exists:
@@ -70,7 +68,6 @@ def test_get_lockfile_path__expected_path_returned(mocker, tmp_path, path_exists
 
 
 def test_get_lockfile_path__lockfile_dir_dne__lockfile_dir_created(mocker, tmp_path):
-
     some_lockfile_dir = "some-lockfile-dir"
     mocker.patch("pygitops._util._lockfile_path", new=tmp_path / some_lockfile_dir)
 
@@ -197,14 +194,12 @@ def test_is_git_repo__is_a_git_repo__returns_true(tmp_path):
 
 
 def test_repo_working_dir__working_dir_none__raises_pygitops_working_dir_error(mocker):
-
     repo = mocker.Mock(working_dir=None)
     with pytest.raises(PyGitOpsWorkingDirError):
         repo_working_dir(repo)
 
 
 def test_repo_working_dir__working_dir_present__expected_working_dir_returned(tmp_path):
-
     repo_path = tmp_path / SOME_REPO_NAME
     repo_path.mkdir()
     repo = Repo.init(repo_path)

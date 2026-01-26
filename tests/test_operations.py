@@ -187,7 +187,6 @@ def test_stage_commit_push_changes__add_new_file__change_persisted(tmp_path):
     local_repo = repos.local_repo
 
     with feature_branch(local_repo, SOME_FEATURE_BRANCH):
-
         test_file_path = Path(repo_working_dir(local_repo)) / SOME_CONTENT_FILENAME
         test_file_path.write_text(SOME_INITIAL_CONTENT)
 
@@ -259,7 +258,6 @@ def test_stage_commit_push_changes__with_staged_files__adds_only_requested_file(
     other_file = "my_test_file.txt"
 
     with feature_branch(local_repo, SOME_FEATURE_BRANCH):
-
         test_file_path = Path(repo_working_dir(local_repo)) / SOME_CONTENT_FILENAME
         test_file_path.write_text(SOME_INITIAL_CONTENT)
         other_file_path = Path(repo_working_dir(local_repo)) / other_file
@@ -285,15 +283,16 @@ def test_stage_commit_push_changes__with_staged_files__adds_only_requested_file(
 
 
 def test_stage_commit_push_changes__no_files_to_stage__raises_pygitops_error(tmp_path):
-
     repos = _initialize_multiple_empty_repos(tmp_path)
     local_repo = repos.local_repo
 
-    with pytest.raises(PyGitOpsStagedItemsError):
-        with feature_branch(local_repo, SOME_FEATURE_BRANCH):
-            stage_commit_push_changes(
-                local_repo, SOME_FEATURE_BRANCH, SOME_ACTOR, SOME_COMMIT_MESSAGE
-            )
+    with (
+        pytest.raises(PyGitOpsStagedItemsError),
+        feature_branch(local_repo, SOME_FEATURE_BRANCH),
+    ):
+        stage_commit_push_changes(
+            local_repo, SOME_FEATURE_BRANCH, SOME_ACTOR, SOME_COMMIT_MESSAGE
+        )
 
 
 def test_stage_commit_push_changes__force_push_flag__changes_pushed(tmp_path):
@@ -325,13 +324,14 @@ def test_feature_branch__untracked_files_present__raises_pygitops_error(mocker):
         git=mocker.Mock(symbolic_ref=mocker.Mock(return_value=SOME_HEAD_REF)),
     )
 
-    with pytest.raises(PyGitOpsError, match=untracked_file):
-        with feature_branch(repo, SOME_FEATURE_BRANCH):
-            pass
+    with (
+        pytest.raises(PyGitOpsError, match=untracked_file),
+        feature_branch(repo, SOME_FEATURE_BRANCH),
+    ):
+        pass
 
 
 def test_feature_branch__active_branch_not_master__raises_pygitops_error(mocker):
-
     active_branch_name = "some_active_feature_branch"
     active_branch = mocker.Mock()
     repo = mocker.Mock(
@@ -341,15 +341,13 @@ def test_feature_branch__active_branch_not_master__raises_pygitops_error(mocker)
         git=mocker.Mock(symbolic_ref=mocker.Mock(return_value=SOME_HEAD_REF)),
     )
 
-    with pytest.raises(PyGitOpsError):
-        with feature_branch(repo, SOME_FEATURE_BRANCH):
-            pass
+    with pytest.raises(PyGitOpsError), feature_branch(repo, SOME_FEATURE_BRANCH):
+        pass
 
 
 def test_feature_branch__master_not_present_in_origin_refs__local_master_not_updated(
     mocker,
 ):
-
     origin_mock = mocker.Mock(refs=[])
     remotes_mock = mocker.Mock(origin=origin_mock)
     local_master_branch = mocker.Mock()
@@ -374,7 +372,6 @@ def test_feature_branch__master_not_present_in_origin_refs__local_master_not_upd
 
 
 def test_feature_branch__master_present_in_origin_refs__local_master_updated(mocker):
-
     origin_mock = mocker.Mock(refs=[GIT_BRANCH_MASTER])
     remotes_mock = mocker.Mock(origin=origin_mock)
     local_master_branch = mocker.Mock()
@@ -404,7 +401,6 @@ def test_feature_branch__master_present_in_origin_refs__local_master_updated(moc
 def test_feature_branch__conditional_branch_checkout(
     mocker, feature_branch_name, checkout_expected
 ):
-
     origin_mock = mocker.Mock(refs=[GIT_BRANCH_MASTER])
     remotes_mock = mocker.Mock(origin=origin_mock)
     local_master_branch = mocker.Mock()
@@ -428,7 +424,6 @@ def test_feature_branch__conditional_branch_checkout(
 
 
 def test_feature_branch__exception_within_context__cleanup_occurs(mocker):
-
     some_branch_name = "some-feature-branch"
     origin_mock = mocker.Mock(refs=[GIT_BRANCH_MASTER])
     remotes_mock = mocker.Mock(origin=origin_mock)
@@ -446,9 +441,8 @@ def test_feature_branch__exception_within_context__cleanup_occurs(mocker):
         git=mocker.Mock(symbolic_ref=mocker.Mock(return_value=SOME_HEAD_REF)),
     )
 
-    with pytest.raises(Exception):
-        with feature_branch(repo_mock, some_branch_name):
-            raise Exception("some exception")
+    with pytest.raises(RuntimeError), feature_branch(repo_mock, some_branch_name):
+        raise RuntimeError("some exception")
 
     local_master_branch.checkout.assert_called_once()
 
@@ -473,13 +467,15 @@ def test_feature_branch__nested_calls__raises_pygitops_error(mocker):
         git=mocker.Mock(symbolic_ref=mocker.Mock(return_value=SOME_HEAD_REF)),
     )
 
-    with feature_branch(repo_mock, some_branch_name):
-        with pytest.raises(
+    with (
+        feature_branch(repo_mock, some_branch_name),
+        pytest.raises(
             PyGitOpsError,
             match=timeout_message,
-        ):
-            with feature_branch(repo_mock, some_branch_name):
-                pass
+        ),
+        feature_branch(repo_mock, some_branch_name),
+    ):
+        pass
 
 
 def test_get_updated_repo__git_error_raised_by_repo__raises_pygitops_error(mocker):
@@ -492,7 +488,6 @@ def test_get_updated_repo__git_error_raised_by_repo__raises_pygitops_error(mocke
 
 
 def test_get_updated_repo__repo_dne__fresh_clone_performed(mocker, tmp_path):
-
     clone_from_mock = mocker.patch("pygitops.operations.Repo.clone_from")
 
     get_updated_repo(SOME_CLONE_REPO_URL, tmp_path)
@@ -501,7 +496,6 @@ def test_get_updated_repo__repo_dne__fresh_clone_performed(mocker, tmp_path):
 
 
 def test_get_updated_repo__repo_dne__kwargs_passed_to_clone_from(mocker, tmp_path):
-
     clone_from_mock = mocker.patch("pygitops.operations.Repo.clone_from")
 
     some_kwargs = {
@@ -522,7 +516,6 @@ def test_get_updated_repo__repo_dne__kwargs_passed_to_clone_from(mocker, tmp_pat
 def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_default_branch(
     mocker, tmp_path
 ):
-
     Repo.init(tmp_path)
     master_branch_mock = mocker.Mock()
     repo_mock = mocker.Mock(
@@ -544,7 +537,6 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_de
 def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_provided_branch(
     mocker, tmp_path, force
 ):
-
     repo_mock = mocker.Mock()
     Repo.init(tmp_path)
     get_default_branch_mock = mocker.patch("pygitops.operations.get_default_branch")
@@ -564,7 +556,6 @@ def test_get_updated_repo__repo_exists_locally__repo_update_performed_against_pr
 
 
 def test_get_updated_repo__clone_dirs_dne__clone_dirs_created(mocker, tmp_path):
-
     clone_dir = tmp_path / "some_parent" / "repo"
     repo_mock = mocker.Mock()
     mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
@@ -597,7 +588,7 @@ def test_get_updated_repo__file_operations__repo_not_present(tmp_path):
     filepath = f"{local_repo.working_tree_dir}/{SOME_CONTENT_FILENAME}"
 
     # content from remote should be present in local repo
-    with open(filepath, "r") as test_file:
+    with open(filepath) as test_file:
         content = test_file.read()
         assert SOME_INITIAL_CONTENT in content
 
@@ -605,7 +596,6 @@ def test_get_updated_repo__file_operations__repo_not_present(tmp_path):
 def test_get_updated_repo__local_repo_on_disk__remote_default_branch_changes__remote_default_pulled(
     tmp_path,
 ):
-
     remote_path = tmp_path / "remote"
     local_path = tmp_path / "local"
     local_path.mkdir()
@@ -654,7 +644,6 @@ def test_get_updated_repo__file_operations__repo_present_locally(tmp_path):
 
 
 def test_get_updated_repo__error__login_not_in_error(mocker):
-
     mocker.patch(
         "pygitops.operations.Repo.clone_from",
         side_effect=GitCommandError("some-command", "some-status"),
@@ -681,7 +670,6 @@ def test_get_updated_repo__error__login_scrubbed(mocker):
 
 
 def test_get_updated_repo__clone_dir_as_str(mocker, tmp_path):
-
     clone_from_mock = mocker.patch(
         "pygitops.operations.Repo.clone_from",
     )
@@ -694,7 +682,6 @@ def test_get_updated_repo__clone_dir_as_str(mocker, tmp_path):
 
 
 def test_get_default_branch__match_not_present__raises_pygitops_error(mocker):
-
     repo_mock = mocker.Mock(
         git=mocker.Mock(
             symbolic_ref=mocker.Mock(return_value="some-unmatched-symbolic-ref")
@@ -706,7 +693,6 @@ def test_get_default_branch__match_not_present__raises_pygitops_error(mocker):
 
 
 def test_get_default_branch__match_index_error__raises_pygitops_error(mocker):
-
     repo_mock = mocker.Mock(
         git=mocker.Mock(symbolic_ref=mocker.Mock(return_value="refs/remotes/origin/"))
     )
@@ -729,7 +715,6 @@ def test_get_default_branch__match_index_error__raises_pygitops_error(mocker):
     ["main", "master", "2.x", "name-with-dashes", "name_with_underscores"],
 )
 def test_get_default_branch__default_branch_returned(tmp_path, branch_name):
-
     repos = _initialize_multiple_empty_repos(tmp_path, initial_branch=branch_name)
     remote_repo = repos.remote_repo
     local_repo = repos.local_repo
@@ -739,7 +724,6 @@ def test_get_default_branch__default_branch_returned(tmp_path, branch_name):
 
 
 def test_get_default_branch__remote_head_changes__new_default_branch_returned(tmp_path):
-
     repos = _initialize_multiple_empty_repos(tmp_path)
     remote_repo = repos.remote_repo
     local_repo = repos.local_repo
@@ -788,7 +772,7 @@ def _assert_get_updated_repo_state(repo):
 
     # prior to running the clone operation, `SOME_FEATURE_BRANCH` is the active feature branch
     assert repo.active_branch == repo.heads[SOME_FEATURE_BRANCH]
-    with open(filepath, "r") as test_file:
+    with open(filepath) as test_file:
         content = test_file.read()
         assert SOME_INITIAL_CONTENT in content
         assert SOME_NEW_CONTENT not in content
@@ -797,7 +781,7 @@ def _assert_get_updated_repo_state(repo):
 
     # after running the clone operation, `GIT_BRANCH_MASTER` is the active feature branch, and the new content is present
     assert repo.active_branch == repo.heads[GIT_BRANCH_MASTER]
-    with open(filepath, "r") as test_file:
+    with open(filepath) as test_file:
         content = test_file.read()
         assert SOME_INITIAL_CONTENT in content
         assert SOME_NEW_CONTENT in content

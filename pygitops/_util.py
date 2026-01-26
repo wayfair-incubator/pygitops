@@ -1,9 +1,9 @@
 import logging
 import os
+from collections.abc import Iterator
 from contextlib import contextmanager
 from os import PathLike
 from pathlib import Path
-from typing import Iterator, Union
 
 from filelock import FileLock, Timeout
 from git import PushInfo, Repo
@@ -37,10 +37,10 @@ def lock_repo(repo: Repo) -> Iterator[None]:
             # yield control to the function using this context manager
             yield
             _logger.debug(f"About to release lock: {lockfile_name} for repo: {repo}")
-    except Timeout:
+    except Timeout as err:
         raise PyGitOpsError(
             f"The timeout of {FILELOCK_ACQUIRE_TIMEOUT_SECONDS} seconds was exceeded when attempting to acquire the lockfile: {lockfile_name}"
-        )
+        ) from err
 
 
 def checkout_pull_branch(repo: Repo, branch: str, force: bool = False) -> None:
@@ -56,7 +56,6 @@ def checkout_pull_branch(repo: Repo, branch: str, force: bool = False) -> None:
     origin.fetch()
 
     if branch not in repo.heads:
-
         # handle case where provided branch name isnt a known remote branch
         if branch not in origin.refs:
             raise PyGitOpsError(
@@ -120,13 +119,13 @@ def is_git_repo(path: Path) -> bool:
     :return: True if the contents of a directory at given path contains a valid git repository
     """
     try:
-        Repo(path).git_dir
+        _ = Repo(path).git_dir
         return True
     except InvalidGitRepositoryError:
         return False
 
 
-def repo_working_dir(repo: Repo) -> Union[str, PathLike]:
+def repo_working_dir(repo: Repo) -> str | PathLike:
     """
     Between gitpython 3.1.18 and 3.1.29, `git.Repo.working_dir` is now typed as Optional.
 
