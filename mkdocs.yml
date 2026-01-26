@@ -1,6 +1,6 @@
 site_name: pygitops Documentation
 site_url: https://wayfair-incubator.github.io/pygitops/
-repo_url: https://github.com/wayfair-incubator/pygitops/
+repo_url: https://github.com/wayfair-incubator/pygitops
 repo_name: wayfair-incubator/pygitops
 edit_uri: edit/main/docs/
 docs_dir: docs
@@ -12,26 +12,31 @@ nav:
   - Why pygitops?: why-pygitops.md
   - Development Guide: development-guide.md
   - Reference: api.md
+  - Changelog: changelog.md
 theme: material
 markdown_extensions:
+  - markdown_include.include:
+      base_path: docs
   - admonition
   - codehilite
+  - footnotes
   - pymdownx.highlight
   - pymdownx.keys
   - pymdownx.superfences
 plugins:
+  - search
   - mkdocstrings:
       handlers:
         python:
-          selection:
-            docstring_style: "restructured-text"
-          rendering:
+          options:
+            docstring_style: "sphinx"
             heading_level: 3
             show_root_heading: True
             show_source: False
             show_root_full_path: False
-extra_css:
-  - css/mkdocstrings.css
+
 extra:
   version:
     provider: mike
+extra_css:
+  - css/mkdocstrings.css

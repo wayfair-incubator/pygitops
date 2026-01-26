@@ -1,27 +1,29 @@
-version: '3.4'
-
 x-mount-app-and-user-git-config: &mount-app-and-user-git-config
   volumes:
-    - ./:/app
-    - ~/.gitconfig:/home/gbq/.gitconfig # allow script to commit as user
+    - "./:/app"
+    - "~/.gitconfig:/home/pygitops/.gitconfig" # allow script to commit as user
 
 services:
 
   # a fully loaded development environment to test new code
   devbox: &devbox
     build:
-      dockerfile: ./docker/devbox.dockerfile
-      context: .
-    image: "wayfair/pygitops-devbox"
+      dockerfile: "./docker/devbox.dockerfile"
+      context: "."
+    image: "pygitops-devbox"
     volumes:
-      - ./:/app
-      - ~/.gitconfig:/home/pygitops/.gitconfig
+      - "./:/app"
 
-  # run all the tests and linting locally
-  # - black & isort will format code to address issues
+  # Run the test & lint suite in a dedicated container
   test:
     <<: *devbox
-    command: docker/run_tests.sh --format-code
+    command: "docker/run_tests.sh --format-code"
+
+  lock-requirements:
+    <<: *devbox
+    user: root
+    entrypoint: "/bin/bash"
+    command: "docker/lock_requirements.sh"
 
   # generate and serve the project documentation locally
   mkdocs: &mkdocs
@@ -29,13 +31,8 @@ services:
     entrypoint: "mkdocs"
     ports:
       - "8000:8000"
-    command: ["serve", "--dev-addr=0.0.0.0:8000"]
+    command: [ "serve", "--dev-addr=0.0.0.0:8000" ]
 
   mike:
-    <<: *mkdocs
+    <<: [ *mkdocs, *mount-app-and-user-git-config ]
     entrypoint: "mike"
-
-  bump:
-    <<: *devbox
-    <<: *mount-app-and-user-git-config
-    entrypoint: docker/bump_version.sh
