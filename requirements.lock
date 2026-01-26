@@ -48,7 +48,7 @@ pyyaml==6.0.2
 pyyaml-env-tag==0.1
 regex==2024.11.6
 requests==2.32.4
-rich==14.0.0
+rich==13.9.4
 ruff==0.14.14
 six==1.17.0
 smmap==5.0.2
