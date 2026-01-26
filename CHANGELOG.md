@@ -6,6 +6,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-01-26
+
+### Added
+
+* Add Python 3.11, 3.12, 3.13, and 3.14 support
+* Add `requirements.lock` for reproducible builds
+* Add `requirements-docs.txt` for documentation dependencies
+* Add `verify-wheel` GitHub Action to verify package installation
+* Add `lock-requirements` docker-compose service for dependency management
+* Add changelog to documentation navigation
+
+### Changed
+
+* **BREAKING**: Drop Python 3.7, 3.8, and 3.9 support (now requires Python 3.10+)
+* Migrate from `setuptools` to `hatchling` build system
+* Replace `black`, `isort`, `flake8`, and `bandit` with `ruff` for linting and formatting
+* Replace `pip` with `uv` in Docker for faster dependency management
+* Consolidate all tool configurations into `pyproject.toml`
+* Update `mkdocs.yml` with modern `mkdocstrings` configuration
+* Update Docker base image to Python 3.14
+* Update development guide documentation to reflect new tooling
+* Modernize type annotations to use `X | Y` syntax instead of `Union[X, Y]`
+
+### Removed
+
+* Remove legacy configuration files (`.bandit`, `.flake8`, `mypy.ini`, `pytest.ini`, `.coveragerc`, `setup.cfg`, `setup.py`, `.bumpversion.cfg`)
+* Remove `bump_version.sh` script (replaced by `hyper-bump-it`)
+* Remove separate `lint.yml` workflow (consolidated into `main.yml`)
+
 ## [0.16.1] - 2022-10-16
 
 ### Added
@@ -117,7 +146,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First public release!!!
 
-[Unreleased]: https://github.com/wayfair-incubator/pygitops/compare/v0.16.0...main
+[Unreleased]: https://github.com/wayfair-incubator/pygitops/compare/v0.17.0...main
+[0.17.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.16.1...v0.17.0
+[0.16.1]: https://github.com/wayfair-incubator/pygitops/compare/v0.16.0...v0.16.1
 [0.16.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/wayfair-incubator/pygitops/compare/v0.13.2...v0.14.0
