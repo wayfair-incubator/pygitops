@@ -681,6 +681,83 @@ def test_get_updated_repo__clone_dir_as_str(mocker, tmp_path):
     assert clone_from_mock.call_args[0][1] == PosixPath(str(tmp_path))
 
 
+def test_get_updated_repo__repo_exists_locally__stale_remote_url__url_updated(
+    mocker, tmp_path
+):
+    """When the cached repo has a different origin URL than the one provided,
+    set_url should be called to update it before fetching."""
+    old_url = "https://sa:token@github.com/wayfair-staging/some-repo.git"
+    new_url = "https://sa:token@github.com/wayfair-shared/some-repo.git"
+
+    Repo.init(tmp_path)
+    origin_mock = mocker.Mock(url=old_url)
+    repo_mock = mocker.Mock(
+        remotes=mocker.Mock(origin=origin_mock),
+        heads={"master": mocker.Mock()},
+        git=mocker.Mock(symbolic_ref=mocker.Mock(return_value=SOME_HEAD_REF)),
+    )
+    mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
+    mocker.patch("pygitops.operations._checkout_pull_branch")
+
+    get_updated_repo(new_url, tmp_path)
+
+    origin_mock.set_url.assert_called_once_with(new_url)
+
+
+def test_get_updated_repo__repo_exists_locally__matching_remote_url__url_not_updated(
+    mocker, tmp_path
+):
+    """When the cached repo already has the correct origin URL,
+    set_url should not be called."""
+    Repo.init(tmp_path)
+    origin_mock = mocker.Mock(url=SOME_CLONE_REPO_URL)
+    repo_mock = mocker.Mock(
+        remotes=mocker.Mock(origin=origin_mock),
+        heads={"master": mocker.Mock()},
+        git=mocker.Mock(symbolic_ref=mocker.Mock(return_value=SOME_HEAD_REF)),
+    )
+    mocker.patch("pygitops.operations.Repo", return_value=repo_mock)
+    mocker.patch("pygitops.operations._checkout_pull_branch")
+
+    get_updated_repo(SOME_CLONE_REPO_URL, tmp_path)
+
+    origin_mock.set_url.assert_not_called()
+
+
+def test_get_updated_repo__file_operations__remote_url_changes__update_succeeds(
+    tmp_path,
+):
+    """Integration test: clone a repo, move the remote to a new path
+    (simulating a GitHub org transfer), then call get_updated_repo with the
+    new path. The function should update the origin URL and pull content."""
+    original_remote = tmp_path / "remote_old"
+    new_remote = tmp_path / "remote_new"
+    local_path = tmp_path / "local"
+    local_path.mkdir()
+
+    original_repo = _initialize_repo_with_content(original_remote)
+    _commit_content(original_repo, SOME_INITIAL_CONTENT)
+
+    local_repo = get_updated_repo(str(original_remote), local_path)
+    filepath = f"{local_repo.working_tree_dir}/{SOME_CONTENT_FILENAME}"
+    with open(filepath) as f:
+        assert SOME_INITIAL_CONTENT in f.read()
+
+    # Simulate org transfer: clone the remote to a new location
+    Repo.clone_from(str(original_remote), str(new_remote))
+    _commit_content(Repo(new_remote), SOME_NEW_CONTENT)
+
+    # Call get_updated_repo with the NEW remote path — the local clone
+    # still points to original_remote via its origin URL
+    local_repo = get_updated_repo(str(new_remote), local_path)
+
+    assert local_repo.remotes.origin.url == str(new_remote)
+    with open(filepath) as f:
+        content = f.read()
+        assert SOME_INITIAL_CONTENT in content
+        assert SOME_NEW_CONTENT in content
+
+
 def test_get_default_branch__match_not_present__raises_pygitops_error(mocker):
     repo_mock = mocker.Mock(
         git=mocker.Mock(
