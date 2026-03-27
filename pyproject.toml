@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pygitops"
-version = "0.17.0"
+version = "0.18.0"
 description = "Wrapper for low-level git logic. Useful for systems automating git operations."
 readme = "README.md"
 license = {text = "MIT"}
