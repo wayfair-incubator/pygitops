@@ -189,6 +189,10 @@ def get_updated_repo(repo_url: str, clone_dir: PathOrStr, **kwargs) -> Repo:
             # if the repo already exists, don't clone it
             if _is_git_repo(clone_dir):
                 repo = Repo(clone_dir)
+                # Sync the remote URL in case the repo was transferred
+                # (e.g. GitHub org transfer from wayfair-staging to wayfair-shared)
+                if repo.remotes.origin.url != repo_url:
+                    repo.remotes.origin.set_url(repo_url)
                 # pull down latest changes from `branch` if provided in kwargs, deferring to repo default branch
                 branch = kwargs.get("branch") or get_default_branch(repo)
                 # destroy any local changes to tracked and untracked files if `force` is provided in kwargs
