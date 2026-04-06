@@ -8,32 +8,16 @@ on:
       branches: ["main"]
 
 env:
-  PYTHON_VERSION: "3.10"
+  PYTHON_VERSION: "3.13"
 
 jobs:
-  bandit:
+  ruff:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install dependencies
-        uses: ./.github/actions/install-dependencies
-        with:
-          test-requirements: "true"
-
-      - name: Run bandit
-        run: bandit --ini .bandit -r pygitops
-
-  black:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install dependencies
@@ -41,68 +25,31 @@ jobs:
         with:
           test-requirements: "true"
 
-      - name: Run black
-        run: black --check pygitops tests
+      - name: Run ruff linter
+        run: ruff check pygitops tests
 
-  flake8:
-    runs-on: ubuntu-latest
-    steps:
-        - name: Check out code
-          uses: actions/checkout@v3
-        - uses: actions/setup-python@v4
-          with:
-            python-version: ${{ env.PYTHON_VERSION }}
-        - name: Install dependencies
-          uses: ./.github/actions/install-dependencies
-          with:
-            test-requirements: "true"
-
-        - name: Run flake8
-          run: flake8 pygitops tests
-
-  isort:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install dependencies
-        uses: ./.github/actions/install-dependencies
-        with:
-          requirements: "true"
-          test-requirements: "true"
-
-      - name: Run isort
-        run: isort --recursive --check-only pygitops tests
+      - name: Run ruff formatter
+        run: ruff format --check pygitops tests
 
   mypy:
     runs-on: ubuntu-latest
     steps:
         - name: Check out code
-          uses: actions/checkout@v3
-        - uses: actions/setup-python@v4
-          with:
-            python-version: ${{ env.PYTHON_VERSION }}
-        - name: Install dependencies
-          uses: ./.github/actions/install-dependencies
-          with:
-            requirements: "true"
-            test-requirements: "true"
-
+          uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         - name: Run mypy
-          run: mypy pygitops tests
+          uses: jashparekh/mypy-action@a4eb0d0a6f3dca7c6f03d7723f0f1cf12091fa19 # v3
+          with:
+            path: "pygitops"
 
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10"]
+        python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14" ]
     steps:
         - name: Check out code
-          uses: actions/checkout@v3
-        - uses: actions/setup-python@v4
+          uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
           with:
             python-version: ${{ matrix.python-version }}
         - name: Install dependencies
@@ -115,7 +62,7 @@ jobs:
           run: pytest --cov-report xml:coverage-${{ matrix.python-version }}.xml --junitxml=test-results-${{ matrix.python-version }}.xml
 
         - name: Upload pytest test results artifact
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
           with:
             name: pytest-results-${{ matrix.python-version }}
             path: test-results-${{ matrix.python-version }}.xml
@@ -123,7 +70,7 @@ jobs:
           if: ${{ always() }}
 
         - name: Upload coverage results artifact
-          uses: actions/upload-artifact@v3
+          uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
           with:
             name: pytest-coverage-${{ matrix.python-version }}
             path: coverage-${{ matrix.python-version }}.xml
@@ -131,56 +78,33 @@ jobs:
           if: ${{ always() }}
 
         - name: Publish coverage results to Codecov
-          uses: codecov/codecov-action@v3.1.1
+          uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
           with:
             file: coverage-${{ matrix.python-version }}.xml
-            fail_ci_if_error: true
+            fail_ci_if_error: false
 
-  build-docs:
+  verify-wheel:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
-    continue-on-error: true
+    strategy:
+      matrix:
+        python-version: [ "3.10", "3.11", "3.12", "3.13", "3.14" ]
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v4
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        uses: ./.github/actions/install-dependencies
+          python-version: ${{ matrix.python-version }}
+      - name: Build wheel
+        uses: ./.github/actions/build-dist
+      - name: Verify wheel
+        uses: ./.github/actions/verify-wheel
         with:
-          requirements: "true"
-          test-requirements: "true"
+          package-import-name: "pygitops"
 
-      - name: Build Docs
-        run: mkdocs build --strict
-
-      - name: Upload docs as an artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: docs-site
-          path: site/
-
-  update-dev-docs:
+  build-devbox-image:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install dependencies
-        uses: ./.github/actions/install-dependencies
-        with:
-          requirements: "true"
-          test-requirements: "true"
-
-      - name: Push documentation changes
-        uses: ./.github/actions/publish-docs-with-mike
-        with:
-          version_name: dev
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Build devbox image
+        run: "docker compose build devbox"

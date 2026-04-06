@@ -1,8 +1,8 @@
 import logging
 import re
+from collections.abc import Iterator
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Dict, Iterator, List, Optional
 
 from filelock import FileLock
 from git import Actor, GitError, Repo
@@ -25,8 +25,8 @@ def stage_commit_push_changes(
     branch_name: str,
     actor: Actor,
     commit_message: str,
-    items_to_stage: Optional[List[Path]] = None,
-    kwargs_to_push: Optional[Dict] = None,
+    items_to_stage: list[Path] | None = None,
+    kwargs_to_push: dict | None = None,
 ) -> None:
     """
     Handles the logic of persisting filesystem changes to a local repository via a commit to a feature branch.
@@ -50,7 +50,7 @@ def stage_commit_push_changes(
     if items_to_stage is None:
         untracked_file_paths = [Path(f) for f in repo.untracked_files]
         items_to_stage = untracked_file_paths + [
-            Path(f.a_path) for f in index.diff(None)
+            Path(f.a_path) for f in index.diff(None) if f.a_path is not None
         ]
 
         if not items_to_stage:
@@ -123,7 +123,6 @@ def feature_branch(repo: Repo, branch_name: str) -> Iterator[None]:
     # lock the following operation such that the process of updating default branch,
     # checking out a feature branch, applying changes, and moving back to default branch never occurs concurrently
     with _lock_repo(repo):
-
         _logger.debug(
             f"Successfully using repository: {repo}, branch_name: {branch_name}"
         )
@@ -243,7 +242,7 @@ def get_default_branch(repo: Repo) -> str:
     expected_position = 1
     try:
         return match.group(expected_position)
-    except IndexError:
+    except IndexError as err:
         raise PyGitOpsError(
             f"The match object did not have a group in position {expected_position}"
-        )
+        ) from err
