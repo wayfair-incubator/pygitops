@@ -1,7 +1,7 @@
-mike==2.1.3
+mike==2.2.0
 
 markdown-include==0.8.1
 mkdocs==1.6.1
-mkdocs-material==9.7.1
-mkdocstrings[python]==1.0.2
-mkdocs-autorefs==1.4.3
+mkdocs-material==9.7.6
+mkdocstrings[python]==1.0.4
+mkdocs-autorefs==1.4.4
