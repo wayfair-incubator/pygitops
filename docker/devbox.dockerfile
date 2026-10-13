@@ -1,4 +1,4 @@
-FROM python:3.14-bookworm
+FROM python:3.15-bookworm
 
 ARG _USER="pygitops"
 ARG _UID="1000"
